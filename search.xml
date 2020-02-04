@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>nexT主题更改博客背景</title>
+    <title>nexT主题美化——更改背景图片&amp;&amp;边框圆角</title>
     <url>/2020/02/04/change-background/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<p>搭建好自己的博客，总想对其美化一番，一路捯饬下来，也踩了不少坑。于是第一篇博文记录下如何正确配置美化nexT主题，希望能够帮助到有缘看到此博的小白哈哈（好吧我也是个小白）…</p>
+]]></content>
       <categories>
         <category>工具使用</category>
         <category>Hexo</category>
