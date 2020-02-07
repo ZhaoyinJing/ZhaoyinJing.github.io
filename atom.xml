@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Galaxy</title>
+  
+  <subtitle>因你看见,所以存在</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://yoursite.coms/"/>
+  <updated>2020-02-07T12:17:35.318Z</updated>
+  <id>https://yoursite.coms/</id>
+  
+  <author>
+    <name>Zhaoyin Jing</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>nexT主题美化——更改背景图片和边框圆角</title>
+    <link href="https://yoursite.coms/2020/02/04/change-background/"/>
+    <id>https://yoursite.coms/2020/02/04/change-background/</id>
+    <published>2020-02-04T04:28:53.000Z</published>
+    <updated>2020-02-07T12:17:35.318Z</updated>
+    
+    <content type="html"><![CDATA[<p>搭建好自己的博客，总想对其美化一番，一路捯饬下来，也踩了不少坑。于是第一篇博文记录下如何正确配置美化nexT主题，希望能够帮助到有缘看到此博的小白哈哈（好吧我也是个小白）…</p><p>从nexT-7.3.0开始，采用数据文件将配置与主题分离，便于后续nexT版本更新。</p><h3 id="更改图片背景"><a href="#更改图片背景" class="headerlink" title="更改图片背景"></a>更改图片背景</h3><p>发现目前网上流行的解决方案还是在<code>hexo/themes/next/source/css/_custom/_custom.styl</code>中进行配置。</p><p>新版本需要新建<code>hexo/source/_data/styles.styl</code>，即在<code>hexo</code>目录的<code>source</code>文件夹下新建<code>_data</code>文件夹，文件夹中新建<code>styles.styl</code>。</p><h4 id="注意：是新建在hexo目录下source文件夹里，而不是主题文件next目录下的source文件夹。"><a href="#注意：是新建在hexo目录下source文件夹里，而不是主题文件next目录下的source文件夹。" class="headerlink" title="注意：是新建在hexo目录下source文件夹里，而不是主题文件next目录下的source文件夹。"></a>注意：是新建在hexo目录下source文件夹里，而不是主题文件next目录下的source文件夹。</h4><p>打开<code>styles.styl</code>，添加如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;背景图片设置</span><br><span class="line">body &#123;</span><br><span class="line">    background-image: url(&#x2F;images&#x2F;background.jpg);</span><br><span class="line">    background-repeat: no-repeat;</span><br><span class="line">    background-attachment: fixed;</span><br><span class="line">    background-size: 100% 100%;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ul><li><p><code>background-image:url</code> 为图片路径，可以直接使用链接，也可以是图片路径（将自定义图片放入<code>hexo\public\images</code>路径下）</p></li><li><p><code>background-repeat</code>：若果背景图片不能全屏，那么是否平铺显示，充满屏幕</p></li><li><p><code>background-attachment</code>：背景是否随着网页上下滚动而滚动，fixed 为固定</p></li><li><p><code>background-size</code>：图片展示大小，这里设置 100%，100% 的意义为：如果背景图片不能全屏，那么是否通过拉伸的方式将背景强制拉伸至全屏显示</p></li></ul><p>接下来打开<code>hexo/themes/next/_config.yml</code>，即next主题配置文件，修改如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">custom_file_path:</span><br><span class="line">  </span><br><span class="line">  style: source&#x2F;_data&#x2F;styles.styl</span><br></pre></td></tr></table></figure><p>记得保存。</p><h3 id="博客页面透明化"><a href="#博客页面透明化" class="headerlink" title="博客页面透明化"></a>博客页面透明化</h3><p>为了更好欣赏背景图片，可将博客页面透明化，在<code>styles.styl</code>里添加如下内容：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;文章内容的透明度设置</span><br><span class="line">.content-wrap &#123;</span><br><span class="line">  opacity: 0.9;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;侧边框的透明度设置</span><br><span class="line">.sidebar &#123;</span><br><span class="line">  background-color: transparent;</span><br><span class="line">  opacity: 0.9;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;菜单栏的透明度设置</span><br><span class="line">.header-inner &#123;</span><br><span class="line">  background: rgba(255,255,255,0.9);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="边框圆角"><a href="#边框圆角" class="headerlink" title="边框圆角"></a>边框圆角</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">custom_file_path:</span><br><span class="line">  </span><br><span class="line">  variable: source&#x2F;_data&#x2F;variables.styl</span><br></pre></td></tr></table></figure><p>在之前新建的<code>_data</code>目录下新建<code>variables.styl</code>，类似新建<code>styles.styl</code>。打开<code>variables.styl</code>，添加如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 圆角设置</span><br><span class="line">$border-radius-inner     &#x3D; 20px 20px 20px 20px;</span><br><span class="line">$border-radius           &#x3D; 20px;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;搭建好自己的博客，总想对其美化一番，一路捯饬下来，也踩了不少坑。于是第一篇博文记录下如何正确配置美化nexT主题，希望能够帮助到有缘看到此博的小白哈哈（好吧我也是个小白）…&lt;/p&gt;
+&lt;p&gt;从nexT-7.3.0开始，采用数据文件将配置与主题分离，便于后续nexT版本更新。&lt;
+      
+    
+    </summary>
+    
+    
+      <category term="工具使用" scheme="https://yoursite.coms/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/"/>
+    
+      <category term="Hexo" scheme="https://yoursite.coms/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/Hexo/"/>
+    
+    
+      <category term="Hexo" scheme="https://yoursite.coms/tags/Hexo/"/>
+    
+      <category term="nexT" scheme="https://yoursite.coms/tags/nexT/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello lyh</title>
+    <link href="https://yoursite.coms/2020/02/02/hello-world/"/>
+    <id>https://yoursite.coms/2020/02/02/hello-world/</id>
+    <published>2020-02-02T07:20:09.558Z</published>
+    <updated>2020-02-02T10:40:06.059Z</updated>
+    
+    <content type="html"><![CDATA[<p>Welcome to lyh’s blog! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Welcome to lyh’s blog! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;documentation&lt;/
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+</feed>
