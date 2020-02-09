@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>nexT主题更改背景图片和边框圆角</title>
-    <url>/2020/02/04/change-background/</url>
+    <url>/lyh9909/2020/02/04/change-background/</url>
     <content><![CDATA[<p>搭建好自己的博客，总想对其美化一番，一路捯饬下来，也踩了不少坑。于是用博文记录下如何正确配置美化nexT主题，希望能够帮助到有缘看到此博的小白哈哈（好吧我也是个小白）…</p>
 <p>从nexT-7.3.0开始，采用数据文件将配置与主题分离，便于后续nexT版本更新。</p>
 <h3 id="更改图片背景"><a href="#更改图片背景" class="headerlink" title="更改图片背景"></a>更改图片背景</h3><p>发现目前网上流行的解决方案还是在<code>hexo/themes/next/source/css/_custom/_custom.styl</code>中进行配置。</p>
@@ -46,7 +46,7 @@
   </entry>
   <entry>
     <title>第一篇博文</title>
-    <url>/2020/02/02/hello-world/</url>
+    <url>/lyh9909/2020/02/02/hello-world/</url>
     <content><![CDATA[<h4 id="“所谓博客，不过是孤芳自赏”"><a href="#“所谓博客，不过是孤芳自赏”" class="headerlink" title="“所谓博客，不过是孤芳自赏”"></a><center>“所谓博客，不过是孤芳自赏”</center></h4><hr>
 <p>在特殊的日子20200202这一天搭建好属于自己的博客，写下第一篇博文纪念哈。</p>
 <p>我想，每个人写博客的初衷是希望自己的文章能够帮助他人解决问题，但更多时候更像是对自己所学所想进行记录，在浩瀚的互联网中留下自己的足迹，自赏自悦。</p>
