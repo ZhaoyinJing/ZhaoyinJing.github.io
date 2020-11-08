@@ -15,7 +15,9 @@
 <li><code>$ cnpm install hexo-image-link --save</code></li>
 </ul>
 </li>
-<li>修改md文件中的图片路径<code></code></li>
+<li>修改md文件中的图片路径<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![label](markdown-file-name&#x2F;image-name.jpg)</span><br></pre></td></tr></table></figure>
+
+</li>
 </ul>
 <p>大功告成！</p>
 <p>赶紧generate and deploy验证一下，完美！</p>
