@@ -1,6 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>让Google搜索到个人博客</title>
+    <url>/2020/11/08/tips_blog/</url>
+    <content><![CDATA[<p>我曾天真地以为搜索引擎能够搜索到自己的博客，咳咳，真是 too young too naive.</p>
+<p>毕竟个人博客作为一个不知名小网站，若想被Google搜索到，需要手动将网址链接添加到Google搜索引擎的索引中。本篇文章就记录下如何让Google搜索到个人博客。</p>
+<h2 id="0-查看个人博客是否被收录"><a href="#0-查看个人博客是否被收录" class="headerlink" title="0.查看个人博客是否被收录"></a>0.查看个人博客是否被收录</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line">site:https://lyh9909.github.io</span><br></pre></td></tr></table></figure>
+
+<p>if show</p>
+<p><img src="D:%5CBlog%5Csource_posts%5Ctips_blog.assets%5Cimage-20201108173849201.png" alt="image-20201108173849201"></p>
+<p>​        那么恭喜你！你发现了一片宝藏文章，继续看下去吧。</p>
+<p>else</p>
+<p>​        相逢即是缘…</p>
+<h2 id="1-打开Google-Search-Console"><a href="#1-打开Google-Search-Console" class="headerlink" title="1.打开Google Search Console"></a>1.打开<a href="https://search.google.com/search-console?hl=zh" target="_blank" rel="noopener">Google Search Console</a></h2><p><img src="D:%5CBlog%5Csource_posts%5Ctips_blog.assets%5Cimage-20201108174629892.png" alt="image-20201108174629892"></p>
+<p>选择网址前缀，输入个人博客网址，比如我的<a href="https://lyh9909.github.io" target="_blank" rel="noopener">https://lyh9909.github.io</a></p>
+<p>点击继续，出现下图</p>
+<p><img src="D:%5CBlog%5Csource_posts%5Ctips_blog.assets%5Cimage-20201108185645652.png" alt="image-20201108185645652"></p>
+<ul>
+<li>下载该html文件并上传至个人博客根目录<a href="https://lyh9909.github.io/" target="_blank" rel="noopener">https://lyh9909.github.io/</a><ul>
+<li>以我个人博客本地目录为例，下载至：<code>hexo/public</code></li>
+<li>提交至github仓库，可以看到<a href="https://lyh9909.github.io/" target="_blank" rel="noopener">https://lyh9909.github.io/</a> 里出现该html文件</li>
+</ul>
+</li>
+<li>在浏览器中访问<a href="https://lyh9909.github.io/googled5a7a45251cda4f4.html" target="_blank" rel="noopener">https://lyh9909.github.io/googled5a7a45251cda4f4.html</a> 确认上传成功</li>
+<li>点击验证，出现下图</li>
+</ul>
+<p><img src="D:%5CBlog%5Csource_posts%5Ctips_blog.assets%5Cimage-20201108185441910.png" alt="image-20201108185441910"></p>
+<h2 id="2-添加站点地图"><a href="#2-添加站点地图" class="headerlink" title="2.添加站点地图"></a>2.添加站点地图</h2><p>网站地图描述了一个网站的架构，这有利于访问者以及搜索引擎找到网站的页面。</p>
+<ul>
+<li><p>打开 <a href="https://www.xml-sitemaps.com/" target="_blank" rel="noopener">XML-sitemap</a> , 输入博客地址，点击start</p>
+<p><img src="D:%5CBlog%5Csource_posts%5Ctips_blog.assets%5Cimage-20201108191431697.png" alt="image-20201108191431697"></p>
+</li>
+<li><p>等待搜索完成，点击 VIEW SITE DETAILS</p>
+<p><img src="D:%5CBlog%5Csource_posts%5Ctips_blog.assets%5Cimage-20201108191612024.png" alt="image-20201108191612024"></p>
+</li>
+<li><p>点击下载 sitemap.xml 文件并上传至个人博客根目录 (方法同前面的google.html文件)</p>
+<p><img src="D:%5CBlog%5Csource_posts%5Ctips_blog.assets%5Cimage-20201108191655509.png" alt="image-20201108191655509"></p>
+</li>
+</ul>
+<h2 id="3-提交站点地图"><a href="#3-提交站点地图" class="headerlink" title="3.提交站点地图"></a>3.提交站点地图</h2><ul>
+<li><p>再次打开<a href="https://search.google.com/search-console?hl=zh" target="_blank" rel="noopener">Google Search Console</a></p>
+</li>
+<li><p>点击主菜单中的站点地图</p>
+</li>
+<li><p>在框里输入sitemap.xml，点击提交</p>
+<p><img src="D:%5CBlog%5Csource_posts%5Ctips_blog.assets%5Cimage-20201108192158624.png" alt="image-20201108192158624"></p>
+</li>
+<li><p>提交成功</p>
+<p><img src="D:%5CBlog%5Csource_posts%5Ctips_blog.assets%5Cimage-20201108192303574.png" alt="image-20201108192303574"></p>
+</li>
+</ul>
+<p>嘿嘿，恭喜你，完结撒花~~</p>
+<blockquote>
+<p>等等，回来！为何发现个人博客还是没有被收录？！</p>
+<p>哎呦，不要着急嘛！要等google下一次更新索引的时候才会将你添加的内容收录进去滴 ~</p>
+<p>大概等个2-3周吧，先把个人博客的内容优化一下吧，这么少的内容哪里有人看 (我说我自己…)</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>实用技巧</category>
+      </categories>
+      <tags>
+        <tag>博客</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>nexT主题更改背景图片和边框圆角</title>
     <url>/2020/02/04/change-background/</url>
     <content><![CDATA[<p>搭建好自己的博客，总想对其美化一番，一路捯饬下来，也踩了不少坑。于是用博文记录下如何正确配置美化nexT主题，希望能够帮助到有缘看到此博的小白哈哈（好吧我也是个小白）…</p>
