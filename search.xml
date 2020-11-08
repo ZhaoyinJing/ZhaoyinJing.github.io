@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>blog_image</title>
+    <title>hexo显示本地图片</title>
     <url>/2020/11/08/blog_image/</url>
     <content><![CDATA[<p>今天真是高产(<del>我又遇到了问题</del>)，哈哈，因为我将上一篇博文deploy之后发现图片加载失败…真的很吐血。去网上一搜索，嗯，好像不少人都遇到了这个问题，解决方法看似一大堆实则无效或过时不匹配，绝大多数资料都是安装<code>hexo-asset-image</code>的插件(ps. 很多资料提供的插件下载地址都不太对)，亲测对于markdown图片路径没有用啊！比出现问题更折磨人的是遇上一堆错误的解决方法…</p>
 <p>我想要寻找在本地和网页上都能显示的办法，终于发现了一款插件<code>hexo-image-link</code>，是将markdown图片路径转换为asset_img语法，使得图片能够同时显示在typora和hexo上。</p>
