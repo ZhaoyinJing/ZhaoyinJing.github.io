@@ -46,17 +46,27 @@
   };
 </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="tags">
-<meta property="og:url" content="https://yoursite.com/tags/index.html">
+  <meta name="description" content="想必大家都曾为typora的图片存储而苦恼（尤其是发给别人md文件的时候），所以将typora的图片上传到图床是一个非常棒的方案。本文将介绍如何将typora的图片上传到Github图床。 0. Github设置 登录自己的github，建立一个&#x3D;&#x3D;公开&#x3D;&#x3D;的仓库，用于存储图片  进入personal settings-&gt;developer settings-&gt;personal acc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="将Typora的图片利用PicGo上传到Github图床">
+<meta property="og:url" content="https://yoursite.com/2021/01/04/typora-img-upload/index.html">
 <meta property="og:site_name" content="Galaxy">
+<meta property="og:description" content="想必大家都曾为typora的图片存储而苦恼（尤其是发给别人md文件的时候），所以将typora的图片上传到图床是一个非常棒的方案。本文将介绍如何将typora的图片上传到Github图床。 0. Github设置 登录自己的github，建立一个&#x3D;&#x3D;公开&#x3D;&#x3D;的仓库，用于存储图片  进入personal settings-&gt;developer settings-&gt;personal acc">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-02-04T04:43:07.000Z">
-<meta property="article:modified_time" content="2020-02-04T04:44:31.431Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210104214953.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210104215221.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210104220515.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210104221735.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210104222052.png">
+<meta property="article:published_time" content="2021-01-04T13:22:40.096Z">
+<meta property="article:modified_time" content="2021-01-04T14:44:54.738Z">
 <meta property="article:author" content="Zhaoyin Jing">
+<meta property="article:tag" content="Typora">
+<meta property="article:tag" content="PicGo">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210104214953.png">
 
-<link rel="canonical" href="https://yoursite.com/tags/">
+<link rel="canonical" href="https://yoursite.com/2021/01/04/typora-img-upload/">
 
 
 <script id="page-configurations">
@@ -64,12 +74,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false
+    isPost: true
   };
 </script>
 
-  <title>tags | Galaxy
-  </title>
+  <title>将Typora的图片利用PicGo上传到Github图床 | Galaxy</title>
   
 
 
@@ -196,52 +205,143 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
           <div class="content">
             
 
   <div class="posts-expand">
-    
-    
-    
-    <div class="post-block" lang="zh-CN">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2021/01/04/typora-img-upload/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Zhaoyin Jing">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Galaxy">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          将Typora的图片利用PicGo上传到Github图床
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">tags
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
 
-<div class="post-meta">
+              <time title="创建时间：2021-01-04 21:22:40 / 修改时间：22:44:54" itemprop="dateCreated datePublished" datetime="2021-01-04T21:22:40+08:00">2021-01-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" itemprop="url" rel="index">
+                    <span itemprop="name">实用技巧</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>想必大家都曾为typora的图片存储而苦恼（尤其是发给别人md文件的时候），所以将typora的图片上传到图床是一个非常棒的方案。本文将介绍如何将typora的图片上传到Github图床。</p>
+<h2 id="0-Github设置"><a href="#0-Github设置" class="headerlink" title="0. Github设置"></a>0. Github设置</h2><ul>
+<li><p>登录自己的github，建立一个==<strong>公开</strong>==的仓库，用于存储图片</p>
+</li>
+<li><p>进入personal settings-&gt;developer settings-&gt;personal access tokens-&gt;generate new token</p>
+<p><img src="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210104214953.png" alt="image-20210104214953729"></p>
+</li>
+<li><p>生成token信息，==及时复制==出现的token</p>
+<p><img src="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210104215221.png" alt="image-20210104215221084"></p>
+</li>
+</ul>
+<h2 id="1-PicGo设置"><a href="#1-PicGo设置" class="headerlink" title="1. PicGo设置"></a>1. PicGo设置</h2><ul>
+<li><p><a href="https://github.com/Molunerfinn/PicGo/releases" target="_blank" rel="noopener">下载PicGo</a></p>
+<p>Windows 用户请下载最新版本的 <code>exe</code>文件</p>
+</li>
+<li><p>图床设置-&gt;GitHub图床</p>
+<p><img src="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210104220515.png" alt="20210104220057"></p>
+</li>
+</ul>
+<ul>
+<li><p>PicGo设置</p>
+<ul>
+<li><p>开启时间戳重命名</p>
+</li>
+<li><p>设置Server</p>
+</li>
+</ul>
+<img src="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210104221735.png" alt="image-20210104221735660" style="zoom: 67%;" />
+
+</li>
+</ul>
+<h2 id="2-Typora-设置"><a href="#2-Typora-设置" class="headerlink" title="2. Typora 设置"></a>2. Typora 设置</h2><ul>
+<li><p>偏好设置</p>
+<p><img src="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210104222052.png" alt="image-20210104222052024"></p>
+</li>
+<li><p>点击验证图片上传选项，测试是否成功</p>
+<p>如看到验证成功，成功上传图片并获得最新的URL则表示成功</p>
+<p>也可以直接在文档中插入图片来查看是否上传成功</p>
+<p>如果不出意外的话，到这里就可以成功上传图片并显示啦！</p>
+</li>
+</ul>
+<blockquote>
+<p>排坑记录：能够上传但是不能显示—— hosts 文件解析的问题，参考这个<a href="https://blog.csdn.net/weixin_42128813/article/details/102915578" target="_blank" rel="noopener">解决github图片不显示问题</a></p>
+</blockquote>
+<p>打开路径<code>C:\Windows\System32\drivers\etc\hosts</code>文件，在最后加上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># GitHub Start </span><br><span class="line">151.101.184.133    raw.githubusercontent.com</span><br><span class="line"># GitHub End</span><br></pre></td></tr></table></figure>
+
+<p><span style="color:#fb7299;">希望可以帮助你们嘿嘿~~</span></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Typora/" rel="tag"># Typora</a>
+              <a href="/tags/PicGo/" rel="tag"># PicGo</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/08/blog_image/" rel="prev" title="hexo显示本地图片">
+      <i class="fa fa-chevron-left"></i> hexo显示本地图片
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-              目前共计 6 个标签
-            </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/Hexo/" style="font-size: 30px; color: #111">Hexo</a> <a href="/tags/PicGo/" style="font-size: 12px; color: #ccc">PicGo</a> <a href="/tags/Typora/" style="font-size: 12px; color: #ccc">Typora</a> <a href="/tags/nexT/" style="font-size: 12px; color: #ccc">nexT</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 30px; color: #111">博客</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 12px; color: #ccc">随笔</a>
-            </div>
-          </div>
-        
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
   </div>
 
 
@@ -293,6 +393,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-Github设置"><span class="nav-number">1.</span> <span class="nav-text">0. Github设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-PicGo设置"><span class="nav-number">2.</span> <span class="nav-text">1. PicGo设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Typora-设置"><span class="nav-number">3.</span> <span class="nav-text">2. Typora 设置</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
