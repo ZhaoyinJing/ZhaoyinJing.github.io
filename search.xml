@@ -8,10 +8,10 @@
 <li><p>登录自己的github，建立一个<span style="color:#fb7299;"><strong>公开</strong></span>的仓库，用于存储图片</p>
 </li>
 <li><p>进入personal settings-&gt;developer settings-&gt;personal access tokens-&gt;generate new token</p>
-<p><img src="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210104214953.png" alt="image-20210104214953729"></p>
+<p><img src="C:%5CUsers%5Clyh%5CDesktop%5C20210104214953.png" alt="image-20210104214953729"></p>
 </li>
 <li><p>生成token信息，<span style="color:#fb7299;">及时复制</span>出现的token</p>
-<p><img src="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210104215221.png" alt="image-20210104215221084"></p>
+<p><img src="C:%5CUsers%5Clyh%5CDesktop%5C20210104215221.png" alt="image-20210104215221084"></p>
 </li>
 </ul>
 <h2 id="1-PicGo设置"><a href="#1-PicGo设置" class="headerlink" title="1. PicGo设置"></a>1. PicGo设置</h2><ul>
@@ -30,13 +30,13 @@
 <li><p>设置Server</p>
 </li>
 </ul>
-<img src="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210104221735.png" alt="image-20210104221735660" style="zoom: 67%;" />
+<img src="C:%5CUsers%5Clyh%5CDesktop%5C20210104221735.png" alt="image-20210104221735660" style="zoom: 67%;" />
 
 </li>
 </ul>
 <h2 id="2-Typora-设置"><a href="#2-Typora-设置" class="headerlink" title="2. Typora 设置"></a>2. Typora 设置</h2><ul>
 <li><p>偏好设置</p>
-<p><img src="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210104222052.png" alt="image-20210104222052024"></p>
+<p><img src="C:%5CUsers%5Clyh%5CDesktop%5C20210104222052.png" alt="image-20210104222052024"></p>
 </li>
 <li><p>点击验证图片上传选项，测试是否成功</p>
 <p>如看到验证成功，成功上传图片并获得最新的URL则表示成功</p>
