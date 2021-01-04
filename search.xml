@@ -5,12 +5,12 @@
     <url>/2021/01/04/typora-img-upload/</url>
     <content><![CDATA[<p>想必大家都曾为typora的图片存储而苦恼（尤其是发给别人md文件的时候），所以将typora的图片上传到图床是一个非常棒的方案。本文将介绍如何将typora的图片上传到Github图床。</p>
 <h2 id="0-Github设置"><a href="#0-Github设置" class="headerlink" title="0. Github设置"></a>0. Github设置</h2><ul>
-<li><p>登录自己的github，建立一个==<strong>公开</strong>==的仓库，用于存储图片</p>
+<li><p>登录自己的github，建立一个<span style="color:#fb7299;"><strong>公开</strong></span>的仓库，用于存储图片</p>
 </li>
 <li><p>进入personal settings-&gt;developer settings-&gt;personal access tokens-&gt;generate new token</p>
 <p><img src="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210104214953.png" alt="image-20210104214953729"></p>
 </li>
-<li><p>生成token信息，==及时复制==出现的token</p>
+<li><p>生成token信息，<span style="color:#fb7299;">及时复制</span>出现的token</p>
 <p><img src="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210104215221.png" alt="image-20210104215221084"></p>
 </li>
 </ul>
