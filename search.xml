@@ -67,6 +67,8 @@
     <url>/2020/11/08/blog_image/</url>
     <content><![CDATA[<p>今天真是高产(<del>我又遇到了问题</del>)，哈哈，因为我将上一篇博文deploy之后发现图片加载失败…真的很吐血。去网上一搜索，嗯，好像不少人都遇到了这个问题，解决方法看似一大堆实则无效或过时不匹配，绝大多数资料都是安装<code>hexo-asset-image</code>的插件(ps. 很多资料提供的插件下载地址都不太对)，亲测对于markdown图片路径没有用啊！比出现问题更折磨人的是遇上一堆错误的解决方法…</p>
 <p>我想要寻找在本地和网页上都能显示的办法，终于发现了一款插件<code>hexo-image-link</code>，是将markdown图片路径转换为asset_img语法，使得图片能够同时显示在typora和hexo上。</p>
+<a id="more"></a>
+
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![image file label](markdown-file-name&#x2F;local-image.png) -&gt; &#123;% asset_img label local-image.png %&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="具体步骤"><a href="#具体步骤" class="headerlink" title="具体步骤"></a>具体步骤</h2><ul>
@@ -98,6 +100,8 @@
     <url>/2020/11/08/tips_blog/</url>
     <content><![CDATA[<p>我曾天真地以为搜索引擎能够搜索到自己的博客，咳咳… 真是 too young too naive.</p>
 <p>毕竟个人博客作为一个不知名小网站，若想被Google搜索到，需要手动将网址链接添加到Google搜索引擎的索引中。本篇文章就记录下如何让Google搜索到个人博客。</p>
+<a id="more"></a>
+
 <h2 id="0-查看个人博客是否被收录"><a href="#0-查看个人博客是否被收录" class="headerlink" title="0.查看个人博客是否被收录"></a>0.查看个人博客是否被收录</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line">site:https://lyh9909.github.io</span><br></pre></td></tr></table></figure>
 
 <p>if show</p>
@@ -169,6 +173,8 @@
     <title>nexT主题更改背景图片和边框圆角</title>
     <url>/2020/02/04/blog_setting/</url>
     <content><![CDATA[<p>搭建好自己的博客，总想对其美化一番，一路捯饬下来，也踩了不少坑。于是用博文记录下如何正确配置美化nexT主题，希望能够帮助到有缘看到此博的小白哈哈（好吧我也是个小白）…</p>
+<a id="more"></a>
+
 <p>从nexT-7.3.0开始，采用数据文件将配置与主题分离，便于后续nexT版本更新。</p>
 <h3 id="更改图片背景"><a href="#更改图片背景" class="headerlink" title="更改图片背景"></a>更改图片背景</h3><p>发现目前网上流行的解决方案还是在<code>hexo/themes/next/source/css/_custom/_custom.styl</code>中进行配置。</p>
 <p>新版本需要新建<code>hexo/source/_data/styles.styl</code>，即在<code>hexo</code>目录的<code>source</code>文件夹下新建<code>_data</code>文件夹，文件夹中新建<code>styles.styl</code>。</p>
@@ -213,6 +219,8 @@
     <title>第一篇博文</title>
     <url>/2020/02/02/hello-world/</url>
     <content><![CDATA[<h4 id="“所谓博客，不过是孤芳自赏”"><a href="#“所谓博客，不过是孤芳自赏”" class="headerlink" title="“所谓博客，不过是孤芳自赏”"></a><center>“所谓博客，不过是孤芳自赏”</center></h4><hr>
+<a id="more"></a>
+
 <p>在特殊的日子20200202这一天搭建好属于自己的博客，写下第一篇博文纪念哈。</p>
 <p>我想，每个人写博客的初衷是希望自己的文章能够帮助他人解决问题，但更多时候更像是对自己所学所想进行记录，在浩瀚的互联网中留下自己的足迹，自赏自悦。</p>
 <p>王阳明有言：“你未看此花时，此花与汝心同归于寂，你来看此花时，则此花颜色一时明白起来。便知此花不在你的心外”。博客亦如此，因你看见，所以存在。</p>
