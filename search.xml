@@ -4,6 +4,8 @@
     <title>将Typora的图片利用PicGo上传到Github图床</title>
     <url>/2021/01/04/typora-img-upload/</url>
     <content><![CDATA[<p>想必大家都曾为typora的图片存储而苦恼（尤其是发给别人md文件的时候），所以将typora的图片上传到图床是一个非常棒的方案。本文将介绍如何将typora的图片上传到Github图床。</p>
+<a id="more"></a>
+
 <h2 id="0-Github设置"><a href="#0-Github设置" class="headerlink" title="0. Github设置"></a>0. Github设置</h2><ul>
 <li><p>登录自己的github，建立一个<span style="color:#fb7299;"><strong>公开</strong></span>的仓库，用于存储图片</p>
 </li>
