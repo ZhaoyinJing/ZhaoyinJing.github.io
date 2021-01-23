@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>将Typora的图片利用PicGo上传到Github图床</title>
-    <url>/2021/01/04/typora-img-upload/</url>
+    <url>/2021/01/04/%E5%B0%86Typora%E7%9A%84%E5%9B%BE%E7%89%87%E5%88%A9%E7%94%A8PicGo%E4%B8%8A%E4%BC%A0%E5%88%B0Github%E5%9B%BE%E5%BA%8A/</url>
     <content><![CDATA[<p>想必大家都曾为typora的图片存储而苦恼（尤其是发给别人md文件的时候），所以将typora的图片上传到图床是一个非常棒的方案。本文将介绍如何将typora的图片上传到Github图床。</p>
 <a id="more"></a>
 
@@ -64,7 +64,7 @@
   </entry>
   <entry>
     <title>hexo显示本地图片</title>
-    <url>/2020/11/08/blog_image/</url>
+    <url>/2020/11/08/hexo%E6%98%BE%E7%A4%BA%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/</url>
     <content><![CDATA[<p>今天真是高产(<del>我又遇到了问题</del>)，哈哈，因为我将上一篇博文deploy之后发现图片加载失败…真的很吐血。去网上一搜索，嗯，好像不少人都遇到了这个问题，解决方法看似一大堆实则无效或过时不匹配，绝大多数资料都是安装<code>hexo-asset-image</code>的插件(ps. 很多资料提供的插件下载地址都不太对)，亲测对于markdown图片路径没有用啊！比出现问题更折磨人的是遇上一堆错误的解决方法…</p>
 <p>我想要寻找在本地和网页上都能显示的办法，终于发现了一款插件<code>hexo-image-link</code>，是将markdown图片路径转换为asset_img语法，使得图片能够同时显示在typora和hexo上。</p>
 <a id="more"></a>
@@ -97,7 +97,7 @@
   </entry>
   <entry>
     <title>让Google搜索到个人博客</title>
-    <url>/2020/11/08/tips_blog/</url>
+    <url>/2020/11/08/%E8%AE%A9Google%E6%90%9C%E7%B4%A2%E5%88%B0%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<p>我曾天真地以为搜索引擎能够搜索到自己的博客，咳咳… 真是 too young too naive.</p>
 <p>毕竟个人博客作为一个不知名小网站，若想被Google搜索到，需要手动将网址链接添加到Google搜索引擎的索引中。本篇文章就记录下如何让Google搜索到个人博客。</p>
 <a id="more"></a>
@@ -105,16 +105,16 @@
 <h2 id="0-查看个人博客是否被收录"><a href="#0-查看个人博客是否被收录" class="headerlink" title="0.查看个人博客是否被收录"></a>0.查看个人博客是否被收录</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line">site:https://lyh9909.github.io</span><br></pre></td></tr></table></figure>
 
 <p>if show</p>
-<img src="/2020/11/08/tips_blog/image-20201108173849201.png" class="" title="image-20201108173849201">
+
 
 <p>​        那么恭喜你！你发现了一片宝藏文章，继续看下去吧。</p>
 <p>else</p>
 <p>​        相逢即是缘…</p>
-<h2 id="1-打开Google-Search-Console"><a href="#1-打开Google-Search-Console" class="headerlink" title="1.打开Google Search Console"></a>1.打开<a href="https://search.google.com/search-console?hl=zh" target="_blank" rel="noopener">Google Search Console</a></h2><img src="/2020/11/08/tips_blog/image-20201108174629892.png" class="" title="image-20201108174629892">
+<h2 id="1-打开Google-Search-Console"><a href="#1-打开Google-Search-Console" class="headerlink" title="1.打开Google Search Console"></a>1.打开<a href="https://search.google.com/search-console?hl=zh" target="_blank" rel="noopener">Google Search Console</a></h2>
 
 <p>选择网址前缀，输入个人博客网址，比如我的<a href="https://lyh9909.github.io" target="_blank" rel="noopener">https://lyh9909.github.io</a></p>
 <p>点击继续，出现下图</p>
-<img src="/2020/11/08/tips_blog/image-20201108185645652.png" class="" title="image-20201108185645652">
+
 
 <ul>
 <li>下载该html文件并上传至个人博客根目录<a href="https://lyh9909.github.io/" target="_blank" rel="noopener">https://lyh9909.github.io/</a><ul>
@@ -125,18 +125,18 @@
 <li>在浏览器中访问<a href="https://lyh9909.github.io/googled5a7a45251cda4f4.html" target="_blank" rel="noopener">https://lyh9909.github.io/googled5a7a45251cda4f4.html</a> 确认上传成功</li>
 <li>点击验证，出现下图</li>
 </ul>
-<img src="/2020/11/08/tips_blog/image-20201108185441910.png" class="" title="image-20201108185441910">
+
 
 <h2 id="2-添加站点地图"><a href="#2-添加站点地图" class="headerlink" title="2.添加站点地图"></a>2.添加站点地图</h2><p>网站地图描述了一个网站的架构，这有利于访问者以及搜索引擎找到网站的页面。</p>
 <ul>
 <li><p>打开 <a href="https://www.xml-sitemaps.com/" target="_blank" rel="noopener">XML-sitemap</a> , 输入博客地址，点击start</p>
-<img src="/2020/11/08/tips_blog/image-20201108191431697.png" class="" title="image-20201108191431697">
+
 </li>
 <li><p>等待搜索完成，点击 VIEW SITE DETAILS</p>
-<img src="/2020/11/08/tips_blog/image-20201108191612024.png" class="" title="image-20201108191612024">
+
 </li>
 <li><p>点击下载 sitemap.xml 文件并上传至个人博客根目录 (方法同前面的google.html文件)</p>
-<img src="/2020/11/08/tips_blog/image-20201108191655509.png" class="" title="image-20201108191655509">
+
 
 </li>
 </ul>
@@ -146,10 +146,10 @@
 <li><p>点击主菜单中的站点地图</p>
 </li>
 <li><p>在框里输入sitemap.xml，点击提交</p>
-<img src="/2020/11/08/tips_blog/image-20201108192158624.png" class="" title="image-20201108192158624">
+
 </li>
 <li><p>提交成功</p>
-<img src="/2020/11/08/tips_blog/image-20201108192303574.png" class="" title="image-20201108192303574">
+
 
 
 
@@ -171,7 +171,7 @@
   </entry>
   <entry>
     <title>nexT主题更改背景图片和边框圆角</title>
-    <url>/2020/02/04/blog_setting/</url>
+    <url>/2020/02/04/nexT%E4%B8%BB%E9%A2%98%E6%9B%B4%E6%94%B9%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87%E5%92%8C%E8%BE%B9%E6%A1%86%E5%9C%86%E8%A7%92/</url>
     <content><![CDATA[<p>搭建好自己的博客，总想对其美化一番，一路捯饬下来，也踩了不少坑。于是用博文记录下如何正确配置美化nexT主题，希望能够帮助到有缘看到此博的小白哈哈（好吧我也是个小白）…</p>
 <a id="more"></a>
 
@@ -217,7 +217,7 @@
   </entry>
   <entry>
     <title>第一篇博文</title>
-    <url>/2020/02/02/hello-world/</url>
+    <url>/2020/02/02/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E6%96%87/</url>
     <content><![CDATA[<h4 id="“所谓博客，不过是孤芳自赏”"><a href="#“所谓博客，不过是孤芳自赏”" class="headerlink" title="“所谓博客，不过是孤芳自赏”"></a><center>“所谓博客，不过是孤芳自赏”</center></h4><hr>
 <a id="more"></a>
 
