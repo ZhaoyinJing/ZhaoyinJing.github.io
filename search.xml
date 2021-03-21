@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Udacity自动驾驶模拟器环境搭建</title>
+    <url>/2021/03/21/Udacity%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>Udacity自动驾驶模拟器因其轻便灵活的特点成为很多初学者的练习项目。网络上示例有很多，但我自己在上手试玩<code>Autonomous mode</code>的时候发现了一个大坑，那就是drive.py与socketio无法成功连接，经过摸索，发现问题出在版本兼容上。</p>
+<a id="more"></a>
+
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>运行 <code>python drive.py model.h5</code> 之后出现如下所示情况</p>
+<p><img src="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210321213726.png" alt="image-20210321213553634"></p>
+<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>socketio很容易不兼容，这里提供一个兼容版本</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install Flask-SocketIO&#x3D;&#x3D;4.3.1 </span><br><span class="line">pip install python-engineio&#x3D;&#x3D;3.13.2 </span><br><span class="line">pip install python-socketio&#x3D;&#x3D;4.6.0</span><br></pre></td></tr></table></figure>
+
+<p>再次试验</p>
+<p><img src="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210321214210.png" alt="image-20210321214210708"></p>
+<p>成功！</p>
+]]></content>
+      <categories>
+        <category>工具使用</category>
+      </categories>
+      <tags>
+        <tag>Udacity</tag>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>《心灵奇旅》观后有感</title>
     <url>/2021/02/02/%E3%80%8A%E5%BF%83%E7%81%B5%E5%A5%87%E6%97%85%E3%80%8B%E8%A7%82%E5%90%8E%E6%9C%89%E6%84%9F/</url>
     <content><![CDATA[<p>今天看完了《soul》，有一幅场景对话深深地触动到了我。影片的主人公乔伊最终如愿完成了自己梦寐以求的演奏，大获成功，可结束后的他怅然若失。<a id="more"></a></p>

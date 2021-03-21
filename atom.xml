@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://yoursite.com/"/>
-  <updated>2021-02-02T13:30:23.069Z</updated>
+  <updated>2021-03-21T13:43:24.612Z</updated>
   <id>https://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Udacity自动驾驶模拟器环境搭建</title>
+    <link href="https://yoursite.com/2021/03/21/Udacity%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+    <id>https://yoursite.com/2021/03/21/Udacity%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</id>
+    <published>2021-03-21T13:43:24.612Z</published>
+    <updated>2021-03-21T13:43:24.612Z</updated>
+    
+    <content type="html"><![CDATA[<p>Udacity自动驾驶模拟器因其轻便灵活的特点成为很多初学者的练习项目。网络上示例有很多，但我自己在上手试玩<code>Autonomous mode</code>的时候发现了一个大坑，那就是drive.py与socketio无法成功连接，经过摸索，发现问题出在版本兼容上。</p><a id="more"></a><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>运行 <code>python drive.py model.h5</code> 之后出现如下所示情况</p><p><img src="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210321213726.png" alt="image-20210321213553634"></p><h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>socketio很容易不兼容，这里提供一个兼容版本</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install Flask-SocketIO&#x3D;&#x3D;4.3.1 </span><br><span class="line">pip install python-engineio&#x3D;&#x3D;3.13.2 </span><br><span class="line">pip install python-socketio&#x3D;&#x3D;4.6.0</span><br></pre></td></tr></table></figure><p>再次试验</p><p><img src="https://raw.githubusercontent.com/ZhaoyinJing/note-imgs/main/20210321214210.png" alt="image-20210321214210708"></p><p>成功！</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Udacity自动驾驶模拟器因其轻便灵活的特点成为很多初学者的练习项目。网络上示例有很多，但我自己在上手试玩&lt;code&gt;Autonomous mode&lt;/code&gt;的时候发现了一个大坑，那就是drive.py与socketio无法成功连接，经过摸索，发现问题出在版本兼容上。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="工具使用" scheme="https://yoursite.com/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/"/>
+    
+    
+      <category term="Udacity" scheme="https://yoursite.com/tags/Udacity/"/>
+    
+      <category term="自动驾驶" scheme="https://yoursite.com/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/"/>
+    
+  </entry>
   
   <entry>
     <title>《心灵奇旅》观后有感</title>
