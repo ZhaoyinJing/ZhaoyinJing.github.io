@@ -46,12 +46,12 @@
   };
 </script>
 
-  <meta name="description" content="Q1: k-Nearest Neighbor classifier本文记录任务1中KNN的问题的解决方案。">
+  <meta name="description" content="Q1: k-Nearest Neighbor classifier 本文记录任务1中KNN的问题的解决方案。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CS231n-任务1：KNN">
 <meta property="og:url" content="https://yoursite.com/2021/06/08/CS231n-%E4%BB%BB%E5%8A%A11%EF%BC%9AKNN/index.html">
 <meta property="og:site_name" content="Galaxy">
-<meta property="og:description" content="Q1: k-Nearest Neighbor classifier本文记录任务1中KNN的问题的解决方案。">
+<meta property="og:description" content="Q1: k-Nearest Neighbor classifier 本文记录任务1中KNN的问题的解决方案。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://gitee.com/liuyh9909/note-imgs/raw/master/20210608211727.png">
 <meta property="og:image" content="https://gitee.com/liuyh9909/note-imgs/raw/master/20210608212120.png">
@@ -286,95 +286,107 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="Q1-k-Nearest-Neighbor-classifier"><a href="#Q1-k-Nearest-Neighbor-classifier" class="headerlink" title="Q1: k-Nearest Neighbor classifier"></a>Q1: k-Nearest Neighbor classifier</h2><p>本文记录任务1中KNN的问题的解决方案。</p>
+        <h2 id="q1-k-nearest-neighbor-classifier">Q1: k-Nearest Neighbor classifier</h2>
+<p>本文记录任务1中KNN的问题的解决方案。</p>
 <a id="more"></a>
-
-<h3 id="kNN"><a href="#kNN" class="headerlink" title="kNN"></a>kNN</h3><ul>
-<li><p>训练阶段： 读取训练集数据</p>
-</li>
+<h3 id="knn">kNN</h3>
+<ul>
+<li><p>训练阶段： 读取训练集数据</p></li>
 <li><p>预测阶段： 计算测试样本到所有训练样本的距离，得到距离矩阵后，找出离测试样本最近的k个训练样本，选择出现次数最多的类别作为测试样本的类别。</p>
-<p>如果训练样本有$Ntr$个，测试样本有$Nte$个，则距离矩阵应为$Nte \times Ntr$大小的矩阵，其中元素$[i,j]$表示第$i$个测试样本到第$j$个训练样本的距离。</p>
-</li>
+<p>如果训练样本有<span class="math inline">\(Ntr\)</span>个，测试样本有<span class="math inline">\(Nte\)</span>个，则距离矩阵应为<span class="math inline">\(Nte \times Ntr\)</span>大小的矩阵，其中元素<span class="math inline">\([i,j]\)</span>表示第<span class="math inline">\(i\)</span>个测试样本到第<span class="math inline">\(j\)</span>个训练样本的距离。</p></li>
 </ul>
 <p>kNN 方法的主要计算量体现在计算测试数据与训练集数据的距离，因此如何优化距离计算量是一个值得思考的问题。本节任务也是循序渐进，分别实现：</p>
-<ol>
-<li><h4 id="双循环计算距离"><a href="#双循环计算距离" class="headerlink" title="双循环计算距离"></a>双循环计算距离</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">dists = np.zeros((num_test, num_train))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(num_test):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(num_train):</span><br><span class="line">        <span class="comment">#####################################################################</span></span><br><span class="line">        <span class="comment"># <span class="doctag">TODO:</span>                                                             #</span></span><br><span class="line">        <span class="comment"># Compute the l2 distance between the ith test point and the jth    #</span></span><br><span class="line">        <span class="comment"># training point, and store the result in dists[i, j]. You should   #</span></span><br><span class="line">        <span class="comment"># not use a loop over dimension, nor use np.linalg.norm().          #</span></span><br><span class="line">        <span class="comment">#####################################################################</span></span><br><span class="line">        <span class="comment"># *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br><span class="line"></span><br><span class="line">        dists[i,j] = np.sqrt(np.sum(np.square(self.X_train[j,:] - X[i,:])))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br></pre></td></tr></table></figure></li>
-<li><h4 id="单循环计算距离"><a href="#单循环计算距离" class="headerlink" title="单循环计算距离"></a>单循环计算距离</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">dists = np.zeros((num_test, num_train))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(num_test):</span><br><span class="line"><span class="comment">#######################################################################</span></span><br><span class="line"><span class="comment"># <span class="doctag">TODO:</span>                                                               #</span></span><br><span class="line"><span class="comment"># Compute the l2 distance between the ith test point and all training #</span></span><br><span class="line"><span class="comment"># points, and store the result in dists[i, :].                        #</span></span><br><span class="line"><span class="comment"># Do not use np.linalg.norm().                                        #</span></span><br><span class="line"><span class="comment">#######################################################################</span></span><br><span class="line"><span class="comment"># *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br><span class="line"></span><br><span class="line">dists[i,:] = np.sqrt(np.sum(np.square(X[i,:] - self.X_train),axis=<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br></pre></td></tr></table></figure></li>
-<li><h4 id="完全向量化的无循环计算距离"><a href="#完全向量化的无循环计算距离" class="headerlink" title="完全向量化的无循环计算距离"></a>完全向量化的无循环计算距离</h4><p>测试集 $X$ 的维度为$Nte\times D$，训练集 $C$ 的维度为$Ntr\times D$，第$i$个测试样本到第$j$个训练样本的距离的平方为：<br>$$<br>\begin{aligned}<br>d^2(X_i,C_j)&amp;=\sum_{k=1}^{D}(X_{ik}-C_{jk})^2\<br>&amp;=|X_i|^2+|C_j|^2-2X_iC_j^T<br>\end{aligned}<br>$$<br>上述结果只是距离矩阵$Nte\times Ntr$其中一个元素，进而可得距离矩阵（注意此处为平方，未计算平方根）<br>$$<br>\text{dists}^2=\left[\begin{array}{cccc}<br>\left|X_{1}\right|^{2} &amp; \left|X_{1}\right|^{2} &amp; \cdots &amp; \left|X_{1}\right|^{2} \<br>\left|X_{2}\right|^{2} &amp; \left|X_{2}\right|^{2} &amp; \cdots &amp; \left|X_{2}\right|^{2} \<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \<br>\left|X_{Nte}\right|^{2} &amp; \left|X_{Nte}\right|^{2} &amp; \cdots &amp; \left|X_{Nte}\right|^{2}<br>\end{array}\right]+\left[\begin{array}{cccc}<br>\left|C_{1}\right|^{2} &amp; \left|C_{2}\right|^{2} &amp; \cdots &amp; \left|C_{Ntr}\right|^{2} \<br>\left|C_{1}\right|^{2} &amp; \left|C_{2}\right|^{2} &amp; \cdots &amp; \left|C_{Ntr}\right|^{2} \<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \<br>\left|C_{1}\right|^{2} &amp; \left|C_{2}\right|^{2} &amp; \cdots &amp; \left|C_{Ntr}\right|^{2}<br>\end{array}\right]-2 \boldsymbol{X C}^{T}<br>$$</p>
+<ol type="1">
+<li><h4 id="双循环计算距离">双循环计算距离</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">dists = np.zeros((num_test, num_train))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(num_test):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(num_train):</span><br><span class="line">        <span class="comment">#####################################################################</span></span><br><span class="line">        <span class="comment"># <span class="doctag">TODO:</span>                                                             #</span></span><br><span class="line">        <span class="comment"># Compute the l2 distance between the ith test point and the jth    #</span></span><br><span class="line">        <span class="comment"># training point, and store the result in dists[i, j]. You should   #</span></span><br><span class="line">        <span class="comment"># not use a loop over dimension, nor use np.linalg.norm().          #</span></span><br><span class="line">        <span class="comment">#####################################################################</span></span><br><span class="line">        <span class="comment"># *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br><span class="line"></span><br><span class="line">        dists[i,j] = np.sqrt(np.sum(np.square(self.X_train[j,:] - X[i,:])))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br></pre></td></tr></table></figure></li>
+<li><h4 id="单循环计算距离">单循环计算距离</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">dists = np.zeros((num_test, num_train))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(num_test):</span><br><span class="line"><span class="comment">#######################################################################</span></span><br><span class="line"><span class="comment"># <span class="doctag">TODO:</span>                                                               #</span></span><br><span class="line"><span class="comment"># Compute the l2 distance between the ith test point and all training #</span></span><br><span class="line"><span class="comment"># points, and store the result in dists[i, :].                        #</span></span><br><span class="line"><span class="comment"># Do not use np.linalg.norm().                                        #</span></span><br><span class="line"><span class="comment">#######################################################################</span></span><br><span class="line"><span class="comment"># *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br><span class="line"></span><br><span class="line">dists[i,:] = np.sqrt(np.sum(np.square(X[i,:] - self.X_train),axis=<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br></pre></td></tr></table></figure></li>
+<li><h4 id="完全向量化的无循环计算距离">完全向量化的无循环计算距离</h4>
+<p>测试集 <span class="math inline">\(X\)</span> 的维度为<span class="math inline">\(Nte\times D\)</span>，训练集 <span class="math inline">\(C\)</span> 的维度为<span class="math inline">\(Ntr\times D\)</span>，第<span class="math inline">\(i\)</span>个测试样本到第<span class="math inline">\(j\)</span>个训练样本的距离的平方为： <span class="math display">\[
+\begin{aligned}
+d^2(X_i,C_j)&amp;=\sum_{k=1}^{D}(X_{ik}-C_{jk})^2\\
+&amp;=\|X_i\|^2+\|C_j\|^2-2X_iC_j^T
+\end{aligned}
+\]</span> 上述结果只是距离矩阵<span class="math inline">\(Nte\times Ntr\)</span>其中一个元素，进而可得距离矩阵（注意此处为平方，未计算平方根） <span class="math display">\[
+\text{dists}^2=\left[\begin{array}{cccc}
+\left\|X_{1}\right\|^{2} &amp; \left\|X_{1}\right\|^{2} &amp; \cdots &amp; \left\|X_{1}\right\|^{2} \\
+\left\|X_{2}\right\|^{2} &amp; \left\|X_{2}\right\|^{2} &amp; \cdots &amp; \left\|X_{2}\right\|^{2} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\left\|X_{Nte}\right\|^{2} &amp; \left\|X_{Nte}\right\|^{2} &amp; \cdots &amp; \left\|X_{Nte}\right\|^{2}
+\end{array}\right]+\left[\begin{array}{cccc}
+\left\|C_{1}\right\|^{2} &amp; \left\|C_{2}\right\|^{2} &amp; \cdots &amp; \left\|C_{Ntr}\right\|^{2} \\
+\left\|C_{1}\right\|^{2} &amp; \left\|C_{2}\right\|^{2} &amp; \cdots &amp; \left\|C_{Ntr}\right\|^{2} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\left\|C_{1}\right\|^{2} &amp; \left\|C_{2}\right\|^{2} &amp; \cdots &amp; \left\|C_{Ntr}\right\|^{2}
+\end{array}\right]-2 \boldsymbol{X C}^{T}
+\]</span></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">dists = np.zeros((num_test, num_train))</span><br><span class="line"><span class="comment">#########################################################################</span></span><br><span class="line"><span class="comment"># <span class="doctag">TODO:</span>                                                                 #</span></span><br><span class="line"><span class="comment"># Compute the l2 distance between all test points and all training      #</span></span><br><span class="line"><span class="comment"># points without using any explicit loops, and store the result in      #</span></span><br><span class="line"><span class="comment"># dists.                                                                #</span></span><br><span class="line"><span class="comment">#                                                                       #</span></span><br><span class="line"><span class="comment"># You should implement this function using only basic array operations; #</span></span><br><span class="line"><span class="comment"># in particular you should not use functions from scipy,                #</span></span><br><span class="line"><span class="comment"># nor use np.linalg.norm().                                             #</span></span><br><span class="line"><span class="comment">#                                                                       #</span></span><br><span class="line"><span class="comment"># HINT: Try to formulate the l2 distance using matrix multiplication    #</span></span><br><span class="line"><span class="comment">#       and two broadcast sums.                                         #</span></span><br><span class="line"><span class="comment">#########################################################################</span></span><br><span class="line"><span class="comment"># *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br><span class="line"></span><br><span class="line">dists += np.sum(X**<span class="number">2</span>,axis=<span class="number">1</span>).reshape(num_test,<span class="number">1</span>)</span><br><span class="line">dists += np.sum(self.X_train**<span class="number">2</span>,axis=<span class="number">1</span>).reshape(<span class="number">1</span>,num_train)</span><br><span class="line">dists -= <span class="number">2</span> * np.matmul(X,self.X_train.T)</span><br><span class="line">dists = np.sqrt(dists)</span><br><span class="line"></span><br><span class="line"><span class="comment"># *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br></pre></td></tr></table></figure>
-
 <blockquote>
 <p>运行时间：</p>
-<p>Two loop version took 44.968023 seconds </p>
-<p>One loop version took 35.752730 seconds </p>
+<p>Two loop version took 44.968023 seconds</p>
+<p>One loop version took 35.752730 seconds</p>
 <p>No loop version took 0.597961 seconds</p>
-</blockquote>
-</li>
+</blockquote></li>
 </ol>
-<hr>
-<h3 id="Cross-validation"><a href="#Cross-validation" class="headerlink" title="Cross-validation"></a>Cross-validation</h3>   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">################################################################################</span></span><br><span class="line">   <span class="comment"># <span class="doctag">TODO:</span>                                                                        #</span></span><br><span class="line">   <span class="comment"># Perform k-fold cross validation to find the best value of k. For each        #</span></span><br><span class="line">   <span class="comment"># possible value of k, run the k-nearest-neighbor algorithm num_folds times,   #</span></span><br><span class="line">   <span class="comment"># where in each case you use all but one of the folds as training data and the #</span></span><br><span class="line">   <span class="comment"># last fold as a validation set. Store the accuracies for all fold and all     #</span></span><br><span class="line">   <span class="comment"># values of k in the k_to_accuracies dictionary.                               #</span></span><br><span class="line">   <span class="comment">################################################################################</span></span><br><span class="line">   <span class="comment"># *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br><span class="line">   <span class="keyword">for</span> k_test <span class="keyword">in</span> k_choices:</span><br><span class="line">     accuracies = np.zeros(num_folds)</span><br><span class="line">     <span class="keyword">for</span> i <span class="keyword">in</span> range(num_folds):</span><br><span class="line">       temp_X = X_train_folds[:]</span><br><span class="line">       temp_y = y_train_folds[:]</span><br><span class="line">       X_val_fold = temp_X.pop(i)</span><br><span class="line">       y_val_fold = temp_y.pop(i)</span><br><span class="line">       temp_X = np.array([y <span class="keyword">for</span> x <span class="keyword">in</span> temp_X <span class="keyword">for</span> y <span class="keyword">in</span> x])</span><br><span class="line">       temp_y = np.array([y <span class="keyword">for</span> x <span class="keyword">in</span> temp_y <span class="keyword">for</span> y <span class="keyword">in</span> x])</span><br><span class="line">       classifier.train(temp_X, temp_y)</span><br><span class="line">       y_test_pred = classifier.predict(X_val_fold,k=k_test)</span><br><span class="line">       num_correct = np.sum(y_test_pred == y_val_fold)</span><br><span class="line">       accuracy = float(num_correct) / (num_training/num_folds)</span><br><span class="line">       accuracies[i] = accuracy</span><br><span class="line">     k_to_accuracies[k_test] = accuracies</span><br><span class="line">   </span><br><span class="line">   <span class="comment"># *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br></pre></td></tr></table></figure>
-
+<hr />
+<h3 id="cross-validation">Cross-validation</h3>
+<p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">################################################################################</span></span><br><span class="line">   <span class="comment"># <span class="doctag">TODO:</span>                                                                        #</span></span><br><span class="line">   <span class="comment"># Perform k-fold cross validation to find the best value of k. For each        #</span></span><br><span class="line">   <span class="comment"># possible value of k, run the k-nearest-neighbor algorithm num_folds times,   #</span></span><br><span class="line">   <span class="comment"># where in each case you use all but one of the folds as training data and the #</span></span><br><span class="line">   <span class="comment"># last fold as a validation set. Store the accuracies for all fold and all     #</span></span><br><span class="line">   <span class="comment"># values of k in the k_to_accuracies dictionary.                               #</span></span><br><span class="line">   <span class="comment">################################################################################</span></span><br><span class="line">   <span class="comment"># *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br><span class="line">   <span class="keyword">for</span> k_test <span class="keyword">in</span> k_choices:</span><br><span class="line">     accuracies = np.zeros(num_folds)</span><br><span class="line">     <span class="keyword">for</span> i <span class="keyword">in</span> range(num_folds):</span><br><span class="line">       temp_X = X_train_folds[:]</span><br><span class="line">       temp_y = y_train_folds[:]</span><br><span class="line">       X_val_fold = temp_X.pop(i)</span><br><span class="line">       y_val_fold = temp_y.pop(i)</span><br><span class="line">       temp_X = np.array([y <span class="keyword">for</span> x <span class="keyword">in</span> temp_X <span class="keyword">for</span> y <span class="keyword">in</span> x])</span><br><span class="line">       temp_y = np.array([y <span class="keyword">for</span> x <span class="keyword">in</span> temp_y <span class="keyword">for</span> y <span class="keyword">in</span> x])</span><br><span class="line">       classifier.train(temp_X, temp_y)</span><br><span class="line">       y_test_pred = classifier.predict(X_val_fold,k=k_test)</span><br><span class="line">       num_correct = np.sum(y_test_pred == y_val_fold)</span><br><span class="line">       accuracy = float(num_correct) / (num_training/num_folds)</span><br><span class="line">       accuracies[i] = accuracy</span><br><span class="line">     k_to_accuracies[k_test] = accuracies</span><br><span class="line">   </span><br><span class="line">   <span class="comment"># *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br></pre></td></tr></table></figure></p>
 <blockquote>
-<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210608211727.png" alt="image-20210608211727129"></p>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210608211727.png" alt="image-20210608211727129" /><figcaption>image-20210608211727129</figcaption>
+</figure>
 <p>best_k = 10</p>
 <p>Got 141 / 500 correct =&gt; accuracy: 0.282000</p>
 </blockquote>
-<hr>
-<h3 id="Inline-Q1"><a href="#Inline-Q1" class="headerlink" title="Inline Q1:"></a>Inline Q1:</h3><p>Notice the structured patterns in the distance matrix, where some rows or columns are visible brighter. (Note that with the default color scheme black indicates low distances while white indicates high distances.)</p>
-<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210608212120.png" alt="image-20210608212120240"></p>
+<hr />
+<h3 id="inline-q1">Inline Q1:</h3>
+<p>Notice the structured patterns in the distance matrix, where some rows or columns are visible brighter. (Note that with the default color scheme black indicates low distances while white indicates high distances.)</p>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210608212120.png" alt="image-20210608212120240" /><figcaption>image-20210608212120240</figcaption>
+</figure>
 <ul>
-<li><p>What in the data is the cause behind the distinctly bright rows?</p>
-</li>
-<li><p>What causes the columns?</p>
-</li>
+<li><p>What in the data is the cause behind the distinctly bright rows?</p></li>
+<li><p>What causes the columns?</p></li>
 </ul>
-<p>$\color{blue}{\text{Your Answer:}}$</p>
+<p><span class="math inline">\(\color{blue}{\text{Your Answer:}}\)</span></p>
 <ul>
-<li><p>the test examples may be significantly bright or dark or color difference.</p>
-</li>
-<li><p>the training examples may be significantly bright or dark or color difference.</p>
-</li>
+<li><p>the test examples may be significantly bright or dark or color difference.</p></li>
+<li><p>the training examples may be significantly bright or dark or color difference.</p></li>
 </ul>
-<h3 id="Inline-Q2"><a href="#Inline-Q2" class="headerlink" title="Inline Q2:"></a>Inline Q2:</h3><p>We can also use other distance metrics such as L1 distance.</p>
-<p>For pixel values $p_{ij}^{(k)}$ at location $(i,j)$ of some image $I_k$, </p>
-<p>the mean $\mu$ across all pixels over all images is<br>$$<br>   \mu=\frac{1}{nhw}\sum_{k=1}^n\sum_{i=1}^{h}\sum_{j=1}^{w}p_{ij}^{(k)}<br>$$<br>   And the pixel-wise mean $\mu_{ij}$ across all images is<br>$$<br>   \mu_{ij}=\frac{1}{n}\sum_{k=1}^np_{ij}^{(k)}<br>$$<br>   The general standard deviation $\sigma$ and pixel-wise standard deviation $\sigma_{ij}$ is defined similarly.</p>
-<p>   Which of the following preprocessing steps will not change the performance of a Nearest Neighbor classifier that uses L1 distance? Select all that apply.</p>
-<ol>
-<li><p>Subtracting the mean $\mu$ ($\tilde{p}<em>{ij}^{(k)}=p</em>{ij}^{(k)}-\mu$.)</p>
-</li>
-<li><p>Subtracting the per pixel mean $\mu_{ij}$ ($\tilde{p}<em>{ij}^{(k)}=p</em>{ij}^{(k)}-\mu_{ij}$.)</p>
-</li>
-<li><p>Subtracting the mean $\mu$ and dividing by the standard deviation $\sigma$.</p>
-</li>
-<li><p>Subtracting the pixel-wise mean $\mu_{ij}$ and dividing by the pixel-wise standard deviation $\sigma_{ij}$.</p>
-</li>
-<li><p>Rotating the coordinate axes of the data.</p>
-</li>
+<h3 id="inline-q2">Inline Q2:</h3>
+<p>We can also use other distance metrics such as L1 distance.</p>
+<p>For pixel values <span class="math inline">\(p_{ij}^{(k)}\)</span> at location <span class="math inline">\((i,j)\)</span> of some image <span class="math inline">\(I_k\)</span>,</p>
+<p>the mean <span class="math inline">\(\mu\)</span> across all pixels over all images is <span class="math display">\[
+   \mu=\frac{1}{nhw}\sum_{k=1}^n\sum_{i=1}^{h}\sum_{j=1}^{w}p_{ij}^{(k)}
+\]</span> And the pixel-wise mean <span class="math inline">\(\mu_{ij}\)</span> across all images is <span class="math display">\[
+   \mu_{ij}=\frac{1}{n}\sum_{k=1}^np_{ij}^{(k)}
+\]</span> The general standard deviation <span class="math inline">\(\sigma\)</span> and pixel-wise standard deviation <span class="math inline">\(\sigma_{ij}\)</span> is defined similarly.</p>
+<p>Which of the following preprocessing steps will not change the performance of a Nearest Neighbor classifier that uses L1 distance? Select all that apply.</p>
+<ol type="1">
+<li><p>Subtracting the mean <span class="math inline">\(\mu\)</span> (<span class="math inline">\(\tilde{p}_{ij}^{(k)}=p_{ij}^{(k)}-\mu\)</span>.)</p></li>
+<li><p>Subtracting the per pixel mean <span class="math inline">\(\mu_{ij}\)</span> (<span class="math inline">\(\tilde{p}_{ij}^{(k)}=p_{ij}^{(k)}-\mu_{ij}\)</span>.)</p></li>
+<li><p>Subtracting the mean <span class="math inline">\(\mu\)</span> and dividing by the standard deviation <span class="math inline">\(\sigma\)</span>.</p></li>
+<li><p>Subtracting the pixel-wise mean <span class="math inline">\(\mu_{ij}\)</span> and dividing by the pixel-wise standard deviation <span class="math inline">\(\sigma_{ij}\)</span>.</p></li>
+<li><p>Rotating the coordinate axes of the data.</p></li>
 </ol>
-<p>   $\color{blue}{\text{Your Answer:}}$ 1 and 3 </p>
-<p>   $\color{blue}{\text{Your Explanation:}}$</p>
-<ol>
-<li><p>$|(p_{ij}^{(k)}-\mu)-(p_{ij}^{(l)}-\mu)|<em>1=|p</em>{ij}^{(k)}-p_{ij}^{(l)}|_1$</p>
-</li>
-<li><p>consider$x=(0,1),y=(1,0)$. Then $|y-x|_1=2$</p>
-<p>now consider the 45 degree rotation matrix $A=\left(\begin{array}{cc}<br>\frac{\sqrt{2}}{2} &amp; -\frac{\sqrt{2}}{2} \<br>\frac{\sqrt{2}}{2} &amp; \frac{\sqrt{2}}{2}<br>\end{array}\right)$</p>
-<p>$x’=Ax=\left(\begin{array}{c}<br>-\frac{\sqrt{2}}{2} \<br>\frac{\sqrt{2}}{2}<br>\end{array}\right), y’=Ay=\left(\begin{array}{c}<br>\frac{\sqrt{2}}{2} \<br>\frac{\sqrt{2}}{2}<br>\end{array}\right),$ Thus  $|y’-x’|_1=\sqrt{2}$</p>
-</li>
+<p><span class="math inline">\(\color{blue}{\text{Your Answer:}}\)</span> 1 and 3</p>
+<p><span class="math inline">\(\color{blue}{\text{Your Explanation:}}\)</span></p>
+<ol type="1">
+<li><p><span class="math inline">\(\|(p_{ij}^{(k)}-\mu)-(p_{ij}^{(l)}-\mu)\|_1=\|p_{ij}^{(k)}-p_{ij}^{(l)}\|_1\)</span></p></li>
+<li><p>consider<span class="math inline">\(x=(0,1),y=(1,0)\)</span>. Then <span class="math inline">\(\|y-x\|_1=2\)</span></p>
+<p>now consider the 45 degree rotation matrix <span class="math inline">\(A=\left(\begin{array}{cc} \frac{\sqrt{2}}{2} &amp; -\frac{\sqrt{2}}{2} \\ \frac{\sqrt{2}}{2} &amp; \frac{\sqrt{2}}{2} \end{array}\right)\)</span></p>
+<p><span class="math inline">\(x&#39;=Ax=\left(\begin{array}{c} -\frac{\sqrt{2}}{2} \\ \frac{\sqrt{2}}{2} \end{array}\right), y&#39;=Ay=\left(\begin{array}{c} \frac{\sqrt{2}}{2} \\ \frac{\sqrt{2}}{2} \end{array}\right),\)</span> Thus <span class="math inline">\(\|y&#39;-x&#39;\|_1=\sqrt{2}\)</span></p></li>
 </ol>
-<h3 id="Inline-Q3"><a href="#Inline-Q3" class="headerlink" title="Inline Q3:"></a>Inline Q3:</h3><p>Which of the following statements about $k$-Nearest Neighbor ($k$-NN) are true in a classification setting, and for all $k$? Select all that apply.</p>
-<ol>
-<li><p>The decision boundary of the k-NN classifier is linear.</p>
-</li>
-<li><p>The training error of a 1-NN will always be lower than or equal to that of 5-NN.</p>
-</li>
-<li><p>The test error of a 1-NN will always be lower than that of a 5-NN.</p>
-</li>
-<li><p>The time needed to classify a test example with the k-NN classifier grows with the size of the training set.</p>
-</li>
-<li><p>None of the above.</p>
-</li>
+<h3 id="inline-q3">Inline Q3:</h3>
+<p>Which of the following statements about <span class="math inline">\(k\)</span>-Nearest Neighbor (<span class="math inline">\(k\)</span>-NN) are true in a classification setting, and for all <span class="math inline">\(k\)</span>? Select all that apply.</p>
+<ol type="1">
+<li><p>The decision boundary of the k-NN classifier is linear.</p></li>
+<li><p>The training error of a 1-NN will always be lower than or equal to that of 5-NN.</p></li>
+<li><p>The test error of a 1-NN will always be lower than that of a 5-NN.</p></li>
+<li><p>The time needed to classify a test example with the k-NN classifier grows with the size of the training set.</p></li>
+<li><p>None of the above.</p></li>
 </ol>
-<p>$\color{blue}{\text{Your Answer:}}$ 2 and 4</p>
+<p><span class="math inline">\(\color{blue}{\text{Your Answer:}}\)</span> 2 and 4</p>
 
     </div>
 
@@ -463,7 +475,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Q1-k-Nearest-Neighbor-classifier"><span class="nav-number">1.</span> <span class="nav-text">Q1: k-Nearest Neighbor classifier</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#kNN"><span class="nav-number">1.1.</span> <span class="nav-text">kNN</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#双循环计算距离"><span class="nav-number">1.1.1.</span> <span class="nav-text">双循环计算距离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单循环计算距离"><span class="nav-number">1.1.2.</span> <span class="nav-text">单循环计算距离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#完全向量化的无循环计算距离"><span class="nav-number">1.1.3.</span> <span class="nav-text">完全向量化的无循环计算距离</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cross-validation"><span class="nav-number">1.2.</span> <span class="nav-text">Cross-validation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Inline-Q1"><span class="nav-number">1.3.</span> <span class="nav-text">Inline Q1:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Inline-Q2"><span class="nav-number">1.4.</span> <span class="nav-text">Inline Q2:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Inline-Q3"><span class="nav-number">1.5.</span> <span class="nav-text">Inline Q3:</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#q1-k-nearest-neighbor-classifier"><span class="nav-number">1.</span> <span class="nav-text">Q1: k-Nearest Neighbor classifier</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#knn"><span class="nav-number">1.1.</span> <span class="nav-text">kNN</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#双循环计算距离"><span class="nav-number">1.1.1.</span> <span class="nav-text">双循环计算距离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单循环计算距离"><span class="nav-number">1.1.2.</span> <span class="nav-text">单循环计算距离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#完全向量化的无循环计算距离"><span class="nav-number">1.1.3.</span> <span class="nav-text">完全向量化的无循环计算距离</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cross-validation"><span class="nav-number">1.2.</span> <span class="nav-text">Cross-validation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inline-q1"><span class="nav-number">1.3.</span> <span class="nav-text">Inline Q1:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inline-q2"><span class="nav-number">1.4.</span> <span class="nav-text">Inline Q2:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inline-q3"><span class="nav-number">1.5.</span> <span class="nav-text">Inline Q3:</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

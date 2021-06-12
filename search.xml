@@ -3,95 +3,107 @@
   <entry>
     <title>CS231n-任务1：KNN</title>
     <url>/2021/06/08/CS231n-%E4%BB%BB%E5%8A%A11%EF%BC%9AKNN/</url>
-    <content><![CDATA[<h2 id="Q1-k-Nearest-Neighbor-classifier"><a href="#Q1-k-Nearest-Neighbor-classifier" class="headerlink" title="Q1: k-Nearest Neighbor classifier"></a>Q1: k-Nearest Neighbor classifier</h2><p>本文记录任务1中KNN的问题的解决方案。</p>
+    <content><![CDATA[<h2 id="q1-k-nearest-neighbor-classifier">Q1: k-Nearest Neighbor classifier</h2>
+<p>本文记录任务1中KNN的问题的解决方案。</p>
 <a id="more"></a>
-
-<h3 id="kNN"><a href="#kNN" class="headerlink" title="kNN"></a>kNN</h3><ul>
-<li><p>训练阶段： 读取训练集数据</p>
-</li>
+<h3 id="knn">kNN</h3>
+<ul>
+<li><p>训练阶段： 读取训练集数据</p></li>
 <li><p>预测阶段： 计算测试样本到所有训练样本的距离，得到距离矩阵后，找出离测试样本最近的k个训练样本，选择出现次数最多的类别作为测试样本的类别。</p>
-<p>如果训练样本有$Ntr$个，测试样本有$Nte$个，则距离矩阵应为$Nte \times Ntr$大小的矩阵，其中元素$[i,j]$表示第$i$个测试样本到第$j$个训练样本的距离。</p>
-</li>
+<p>如果训练样本有<span class="math inline">\(Ntr\)</span>个，测试样本有<span class="math inline">\(Nte\)</span>个，则距离矩阵应为<span class="math inline">\(Nte \times Ntr\)</span>大小的矩阵，其中元素<span class="math inline">\([i,j]\)</span>表示第<span class="math inline">\(i\)</span>个测试样本到第<span class="math inline">\(j\)</span>个训练样本的距离。</p></li>
 </ul>
 <p>kNN 方法的主要计算量体现在计算测试数据与训练集数据的距离，因此如何优化距离计算量是一个值得思考的问题。本节任务也是循序渐进，分别实现：</p>
-<ol>
-<li><h4 id="双循环计算距离"><a href="#双循环计算距离" class="headerlink" title="双循环计算距离"></a>双循环计算距离</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dists = np.zeros((num_test, num_train))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(num_test):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(num_train):</span><br><span class="line">        <span class="comment">#####################################################################</span></span><br><span class="line">        <span class="comment"># <span class="doctag">TODO:</span>                                                             #</span></span><br><span class="line">        <span class="comment"># Compute the l2 distance between the ith test point and the jth    #</span></span><br><span class="line">        <span class="comment"># training point, and store the result in dists[i, j]. You should   #</span></span><br><span class="line">        <span class="comment"># not use a loop over dimension, nor use np.linalg.norm().          #</span></span><br><span class="line">        <span class="comment">#####################################################################</span></span><br><span class="line">        <span class="comment"># *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br><span class="line"></span><br><span class="line">        dists[i,j] = np.sqrt(np.sum(np.square(self.X_train[j,:] - X[i,:])))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br></pre></td></tr></table></figure></li>
-<li><h4 id="单循环计算距离"><a href="#单循环计算距离" class="headerlink" title="单循环计算距离"></a>单循环计算距离</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dists = np.zeros((num_test, num_train))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(num_test):</span><br><span class="line"><span class="comment">#######################################################################</span></span><br><span class="line"><span class="comment"># <span class="doctag">TODO:</span>                                                               #</span></span><br><span class="line"><span class="comment"># Compute the l2 distance between the ith test point and all training #</span></span><br><span class="line"><span class="comment"># points, and store the result in dists[i, :].                        #</span></span><br><span class="line"><span class="comment"># Do not use np.linalg.norm().                                        #</span></span><br><span class="line"><span class="comment">#######################################################################</span></span><br><span class="line"><span class="comment"># *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br><span class="line"></span><br><span class="line">dists[i,:] = np.sqrt(np.sum(np.square(X[i,:] - self.X_train),axis=<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br></pre></td></tr></table></figure></li>
-<li><h4 id="完全向量化的无循环计算距离"><a href="#完全向量化的无循环计算距离" class="headerlink" title="完全向量化的无循环计算距离"></a>完全向量化的无循环计算距离</h4><p>测试集 $X$ 的维度为$Nte\times D$，训练集 $C$ 的维度为$Ntr\times D$，第$i$个测试样本到第$j$个训练样本的距离的平方为：<br>$$<br>\begin{aligned}<br>d^2(X_i,C_j)&amp;=\sum_{k=1}^{D}(X_{ik}-C_{jk})^2\<br>&amp;=|X_i|^2+|C_j|^2-2X_iC_j^T<br>\end{aligned}<br>$$<br>上述结果只是距离矩阵$Nte\times Ntr$其中一个元素，进而可得距离矩阵（注意此处为平方，未计算平方根）<br>$$<br>\text{dists}^2=\left[\begin{array}{cccc}<br>\left|X_{1}\right|^{2} &amp; \left|X_{1}\right|^{2} &amp; \cdots &amp; \left|X_{1}\right|^{2} \<br>\left|X_{2}\right|^{2} &amp; \left|X_{2}\right|^{2} &amp; \cdots &amp; \left|X_{2}\right|^{2} \<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \<br>\left|X_{Nte}\right|^{2} &amp; \left|X_{Nte}\right|^{2} &amp; \cdots &amp; \left|X_{Nte}\right|^{2}<br>\end{array}\right]+\left[\begin{array}{cccc}<br>\left|C_{1}\right|^{2} &amp; \left|C_{2}\right|^{2} &amp; \cdots &amp; \left|C_{Ntr}\right|^{2} \<br>\left|C_{1}\right|^{2} &amp; \left|C_{2}\right|^{2} &amp; \cdots &amp; \left|C_{Ntr}\right|^{2} \<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \<br>\left|C_{1}\right|^{2} &amp; \left|C_{2}\right|^{2} &amp; \cdots &amp; \left|C_{Ntr}\right|^{2}<br>\end{array}\right]-2 \boldsymbol{X C}^{T}<br>$$</p>
+<ol type="1">
+<li><h4 id="双循环计算距离">双循环计算距离</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dists = np.zeros((num_test, num_train))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(num_test):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(num_train):</span><br><span class="line">        <span class="comment">#####################################################################</span></span><br><span class="line">        <span class="comment"># <span class="doctag">TODO:</span>                                                             #</span></span><br><span class="line">        <span class="comment"># Compute the l2 distance between the ith test point and the jth    #</span></span><br><span class="line">        <span class="comment"># training point, and store the result in dists[i, j]. You should   #</span></span><br><span class="line">        <span class="comment"># not use a loop over dimension, nor use np.linalg.norm().          #</span></span><br><span class="line">        <span class="comment">#####################################################################</span></span><br><span class="line">        <span class="comment"># *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br><span class="line"></span><br><span class="line">        dists[i,j] = np.sqrt(np.sum(np.square(self.X_train[j,:] - X[i,:])))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br></pre></td></tr></table></figure></li>
+<li><h4 id="单循环计算距离">单循环计算距离</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dists = np.zeros((num_test, num_train))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(num_test):</span><br><span class="line"><span class="comment">#######################################################################</span></span><br><span class="line"><span class="comment"># <span class="doctag">TODO:</span>                                                               #</span></span><br><span class="line"><span class="comment"># Compute the l2 distance between the ith test point and all training #</span></span><br><span class="line"><span class="comment"># points, and store the result in dists[i, :].                        #</span></span><br><span class="line"><span class="comment"># Do not use np.linalg.norm().                                        #</span></span><br><span class="line"><span class="comment">#######################################################################</span></span><br><span class="line"><span class="comment"># *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br><span class="line"></span><br><span class="line">dists[i,:] = np.sqrt(np.sum(np.square(X[i,:] - self.X_train),axis=<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br></pre></td></tr></table></figure></li>
+<li><h4 id="完全向量化的无循环计算距离">完全向量化的无循环计算距离</h4>
+<p>测试集 <span class="math inline">\(X\)</span> 的维度为<span class="math inline">\(Nte\times D\)</span>，训练集 <span class="math inline">\(C\)</span> 的维度为<span class="math inline">\(Ntr\times D\)</span>，第<span class="math inline">\(i\)</span>个测试样本到第<span class="math inline">\(j\)</span>个训练样本的距离的平方为： <span class="math display">\[
+\begin{aligned}
+d^2(X_i,C_j)&amp;=\sum_{k=1}^{D}(X_{ik}-C_{jk})^2\\
+&amp;=\|X_i\|^2+\|C_j\|^2-2X_iC_j^T
+\end{aligned}
+\]</span> 上述结果只是距离矩阵<span class="math inline">\(Nte\times Ntr\)</span>其中一个元素，进而可得距离矩阵（注意此处为平方，未计算平方根） <span class="math display">\[
+\text{dists}^2=\left[\begin{array}{cccc}
+\left\|X_{1}\right\|^{2} &amp; \left\|X_{1}\right\|^{2} &amp; \cdots &amp; \left\|X_{1}\right\|^{2} \\
+\left\|X_{2}\right\|^{2} &amp; \left\|X_{2}\right\|^{2} &amp; \cdots &amp; \left\|X_{2}\right\|^{2} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\left\|X_{Nte}\right\|^{2} &amp; \left\|X_{Nte}\right\|^{2} &amp; \cdots &amp; \left\|X_{Nte}\right\|^{2}
+\end{array}\right]+\left[\begin{array}{cccc}
+\left\|C_{1}\right\|^{2} &amp; \left\|C_{2}\right\|^{2} &amp; \cdots &amp; \left\|C_{Ntr}\right\|^{2} \\
+\left\|C_{1}\right\|^{2} &amp; \left\|C_{2}\right\|^{2} &amp; \cdots &amp; \left\|C_{Ntr}\right\|^{2} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\left\|C_{1}\right\|^{2} &amp; \left\|C_{2}\right\|^{2} &amp; \cdots &amp; \left\|C_{Ntr}\right\|^{2}
+\end{array}\right]-2 \boldsymbol{X C}^{T}
+\]</span></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dists = np.zeros((num_test, num_train))</span><br><span class="line"><span class="comment">#########################################################################</span></span><br><span class="line"><span class="comment"># <span class="doctag">TODO:</span>                                                                 #</span></span><br><span class="line"><span class="comment"># Compute the l2 distance between all test points and all training      #</span></span><br><span class="line"><span class="comment"># points without using any explicit loops, and store the result in      #</span></span><br><span class="line"><span class="comment"># dists.                                                                #</span></span><br><span class="line"><span class="comment">#                                                                       #</span></span><br><span class="line"><span class="comment"># You should implement this function using only basic array operations; #</span></span><br><span class="line"><span class="comment"># in particular you should not use functions from scipy,                #</span></span><br><span class="line"><span class="comment"># nor use np.linalg.norm().                                             #</span></span><br><span class="line"><span class="comment">#                                                                       #</span></span><br><span class="line"><span class="comment"># HINT: Try to formulate the l2 distance using matrix multiplication    #</span></span><br><span class="line"><span class="comment">#       and two broadcast sums.                                         #</span></span><br><span class="line"><span class="comment">#########################################################################</span></span><br><span class="line"><span class="comment"># *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br><span class="line"></span><br><span class="line">dists += np.sum(X**<span class="number">2</span>,axis=<span class="number">1</span>).reshape(num_test,<span class="number">1</span>)</span><br><span class="line">dists += np.sum(self.X_train**<span class="number">2</span>,axis=<span class="number">1</span>).reshape(<span class="number">1</span>,num_train)</span><br><span class="line">dists -= <span class="number">2</span> * np.matmul(X,self.X_train.T)</span><br><span class="line">dists = np.sqrt(dists)</span><br><span class="line"></span><br><span class="line"><span class="comment"># *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br></pre></td></tr></table></figure>
-
 <blockquote>
 <p>运行时间：</p>
-<p>Two loop version took 44.968023 seconds </p>
-<p>One loop version took 35.752730 seconds </p>
+<p>Two loop version took 44.968023 seconds</p>
+<p>One loop version took 35.752730 seconds</p>
 <p>No loop version took 0.597961 seconds</p>
-</blockquote>
-</li>
+</blockquote></li>
 </ol>
-<hr>
-<h3 id="Cross-validation"><a href="#Cross-validation" class="headerlink" title="Cross-validation"></a>Cross-validation</h3>   <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">################################################################################</span></span><br><span class="line">   <span class="comment"># <span class="doctag">TODO:</span>                                                                        #</span></span><br><span class="line">   <span class="comment"># Perform k-fold cross validation to find the best value of k. For each        #</span></span><br><span class="line">   <span class="comment"># possible value of k, run the k-nearest-neighbor algorithm num_folds times,   #</span></span><br><span class="line">   <span class="comment"># where in each case you use all but one of the folds as training data and the #</span></span><br><span class="line">   <span class="comment"># last fold as a validation set. Store the accuracies for all fold and all     #</span></span><br><span class="line">   <span class="comment"># values of k in the k_to_accuracies dictionary.                               #</span></span><br><span class="line">   <span class="comment">################################################################################</span></span><br><span class="line">   <span class="comment"># *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br><span class="line">   <span class="keyword">for</span> k_test <span class="keyword">in</span> k_choices:</span><br><span class="line">     accuracies = np.zeros(num_folds)</span><br><span class="line">     <span class="keyword">for</span> i <span class="keyword">in</span> range(num_folds):</span><br><span class="line">       temp_X = X_train_folds[:]</span><br><span class="line">       temp_y = y_train_folds[:]</span><br><span class="line">       X_val_fold = temp_X.pop(i)</span><br><span class="line">       y_val_fold = temp_y.pop(i)</span><br><span class="line">       temp_X = np.array([y <span class="keyword">for</span> x <span class="keyword">in</span> temp_X <span class="keyword">for</span> y <span class="keyword">in</span> x])</span><br><span class="line">       temp_y = np.array([y <span class="keyword">for</span> x <span class="keyword">in</span> temp_y <span class="keyword">for</span> y <span class="keyword">in</span> x])</span><br><span class="line">       classifier.train(temp_X, temp_y)</span><br><span class="line">       y_test_pred = classifier.predict(X_val_fold,k=k_test)</span><br><span class="line">       num_correct = np.sum(y_test_pred == y_val_fold)</span><br><span class="line">       accuracy = float(num_correct) / (num_training/num_folds)</span><br><span class="line">       accuracies[i] = accuracy</span><br><span class="line">     k_to_accuracies[k_test] = accuracies</span><br><span class="line">   </span><br><span class="line">   <span class="comment"># *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br></pre></td></tr></table></figure>
-
+<hr />
+<h3 id="cross-validation">Cross-validation</h3>
+<p><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">################################################################################</span></span><br><span class="line">   <span class="comment"># <span class="doctag">TODO:</span>                                                                        #</span></span><br><span class="line">   <span class="comment"># Perform k-fold cross validation to find the best value of k. For each        #</span></span><br><span class="line">   <span class="comment"># possible value of k, run the k-nearest-neighbor algorithm num_folds times,   #</span></span><br><span class="line">   <span class="comment"># where in each case you use all but one of the folds as training data and the #</span></span><br><span class="line">   <span class="comment"># last fold as a validation set. Store the accuracies for all fold and all     #</span></span><br><span class="line">   <span class="comment"># values of k in the k_to_accuracies dictionary.                               #</span></span><br><span class="line">   <span class="comment">################################################################################</span></span><br><span class="line">   <span class="comment"># *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br><span class="line">   <span class="keyword">for</span> k_test <span class="keyword">in</span> k_choices:</span><br><span class="line">     accuracies = np.zeros(num_folds)</span><br><span class="line">     <span class="keyword">for</span> i <span class="keyword">in</span> range(num_folds):</span><br><span class="line">       temp_X = X_train_folds[:]</span><br><span class="line">       temp_y = y_train_folds[:]</span><br><span class="line">       X_val_fold = temp_X.pop(i)</span><br><span class="line">       y_val_fold = temp_y.pop(i)</span><br><span class="line">       temp_X = np.array([y <span class="keyword">for</span> x <span class="keyword">in</span> temp_X <span class="keyword">for</span> y <span class="keyword">in</span> x])</span><br><span class="line">       temp_y = np.array([y <span class="keyword">for</span> x <span class="keyword">in</span> temp_y <span class="keyword">for</span> y <span class="keyword">in</span> x])</span><br><span class="line">       classifier.train(temp_X, temp_y)</span><br><span class="line">       y_test_pred = classifier.predict(X_val_fold,k=k_test)</span><br><span class="line">       num_correct = np.sum(y_test_pred == y_val_fold)</span><br><span class="line">       accuracy = float(num_correct) / (num_training/num_folds)</span><br><span class="line">       accuracies[i] = accuracy</span><br><span class="line">     k_to_accuracies[k_test] = accuracies</span><br><span class="line">   </span><br><span class="line">   <span class="comment"># *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span></span><br></pre></td></tr></table></figure></p>
 <blockquote>
-<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210608211727.png" alt="image-20210608211727129"></p>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210608211727.png" alt="image-20210608211727129" /><figcaption>image-20210608211727129</figcaption>
+</figure>
 <p>best_k = 10</p>
 <p>Got 141 / 500 correct =&gt; accuracy: 0.282000</p>
 </blockquote>
-<hr>
-<h3 id="Inline-Q1"><a href="#Inline-Q1" class="headerlink" title="Inline Q1:"></a>Inline Q1:</h3><p>Notice the structured patterns in the distance matrix, where some rows or columns are visible brighter. (Note that with the default color scheme black indicates low distances while white indicates high distances.)</p>
-<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210608212120.png" alt="image-20210608212120240"></p>
+<hr />
+<h3 id="inline-q1">Inline Q1:</h3>
+<p>Notice the structured patterns in the distance matrix, where some rows or columns are visible brighter. (Note that with the default color scheme black indicates low distances while white indicates high distances.)</p>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210608212120.png" alt="image-20210608212120240" /><figcaption>image-20210608212120240</figcaption>
+</figure>
 <ul>
-<li><p>What in the data is the cause behind the distinctly bright rows?</p>
-</li>
-<li><p>What causes the columns?</p>
-</li>
+<li><p>What in the data is the cause behind the distinctly bright rows?</p></li>
+<li><p>What causes the columns?</p></li>
 </ul>
-<p>$\color{blue}{\text{Your Answer:}}$</p>
+<p><span class="math inline">\(\color{blue}{\text{Your Answer:}}\)</span></p>
 <ul>
-<li><p>the test examples may be significantly bright or dark or color difference.</p>
-</li>
-<li><p>the training examples may be significantly bright or dark or color difference.</p>
-</li>
+<li><p>the test examples may be significantly bright or dark or color difference.</p></li>
+<li><p>the training examples may be significantly bright or dark or color difference.</p></li>
 </ul>
-<h3 id="Inline-Q2"><a href="#Inline-Q2" class="headerlink" title="Inline Q2:"></a>Inline Q2:</h3><p>We can also use other distance metrics such as L1 distance.</p>
-<p>For pixel values $p_{ij}^{(k)}$ at location $(i,j)$ of some image $I_k$, </p>
-<p>the mean $\mu$ across all pixels over all images is<br>$$<br>   \mu=\frac{1}{nhw}\sum_{k=1}^n\sum_{i=1}^{h}\sum_{j=1}^{w}p_{ij}^{(k)}<br>$$<br>   And the pixel-wise mean $\mu_{ij}$ across all images is<br>$$<br>   \mu_{ij}=\frac{1}{n}\sum_{k=1}^np_{ij}^{(k)}<br>$$<br>   The general standard deviation $\sigma$ and pixel-wise standard deviation $\sigma_{ij}$ is defined similarly.</p>
-<p>   Which of the following preprocessing steps will not change the performance of a Nearest Neighbor classifier that uses L1 distance? Select all that apply.</p>
-<ol>
-<li><p>Subtracting the mean $\mu$ ($\tilde{p}<em>{ij}^{(k)}=p</em>{ij}^{(k)}-\mu$.)</p>
-</li>
-<li><p>Subtracting the per pixel mean $\mu_{ij}$ ($\tilde{p}<em>{ij}^{(k)}=p</em>{ij}^{(k)}-\mu_{ij}$.)</p>
-</li>
-<li><p>Subtracting the mean $\mu$ and dividing by the standard deviation $\sigma$.</p>
-</li>
-<li><p>Subtracting the pixel-wise mean $\mu_{ij}$ and dividing by the pixel-wise standard deviation $\sigma_{ij}$.</p>
-</li>
-<li><p>Rotating the coordinate axes of the data.</p>
-</li>
+<h3 id="inline-q2">Inline Q2:</h3>
+<p>We can also use other distance metrics such as L1 distance.</p>
+<p>For pixel values <span class="math inline">\(p_{ij}^{(k)}\)</span> at location <span class="math inline">\((i,j)\)</span> of some image <span class="math inline">\(I_k\)</span>,</p>
+<p>the mean <span class="math inline">\(\mu\)</span> across all pixels over all images is <span class="math display">\[
+   \mu=\frac{1}{nhw}\sum_{k=1}^n\sum_{i=1}^{h}\sum_{j=1}^{w}p_{ij}^{(k)}
+\]</span> And the pixel-wise mean <span class="math inline">\(\mu_{ij}\)</span> across all images is <span class="math display">\[
+   \mu_{ij}=\frac{1}{n}\sum_{k=1}^np_{ij}^{(k)}
+\]</span> The general standard deviation <span class="math inline">\(\sigma\)</span> and pixel-wise standard deviation <span class="math inline">\(\sigma_{ij}\)</span> is defined similarly.</p>
+<p>Which of the following preprocessing steps will not change the performance of a Nearest Neighbor classifier that uses L1 distance? Select all that apply.</p>
+<ol type="1">
+<li><p>Subtracting the mean <span class="math inline">\(\mu\)</span> (<span class="math inline">\(\tilde{p}_{ij}^{(k)}=p_{ij}^{(k)}-\mu\)</span>.)</p></li>
+<li><p>Subtracting the per pixel mean <span class="math inline">\(\mu_{ij}\)</span> (<span class="math inline">\(\tilde{p}_{ij}^{(k)}=p_{ij}^{(k)}-\mu_{ij}\)</span>.)</p></li>
+<li><p>Subtracting the mean <span class="math inline">\(\mu\)</span> and dividing by the standard deviation <span class="math inline">\(\sigma\)</span>.</p></li>
+<li><p>Subtracting the pixel-wise mean <span class="math inline">\(\mu_{ij}\)</span> and dividing by the pixel-wise standard deviation <span class="math inline">\(\sigma_{ij}\)</span>.</p></li>
+<li><p>Rotating the coordinate axes of the data.</p></li>
 </ol>
-<p>   $\color{blue}{\text{Your Answer:}}$ 1 and 3 </p>
-<p>   $\color{blue}{\text{Your Explanation:}}$</p>
-<ol>
-<li><p>$|(p_{ij}^{(k)}-\mu)-(p_{ij}^{(l)}-\mu)|<em>1=|p</em>{ij}^{(k)}-p_{ij}^{(l)}|_1$</p>
-</li>
-<li><p>consider$x=(0,1),y=(1,0)$. Then $|y-x|_1=2$</p>
-<p>now consider the 45 degree rotation matrix $A=\left(\begin{array}{cc}<br>\frac{\sqrt{2}}{2} &amp; -\frac{\sqrt{2}}{2} \<br>\frac{\sqrt{2}}{2} &amp; \frac{\sqrt{2}}{2}<br>\end{array}\right)$</p>
-<p>$x’=Ax=\left(\begin{array}{c}<br>-\frac{\sqrt{2}}{2} \<br>\frac{\sqrt{2}}{2}<br>\end{array}\right), y’=Ay=\left(\begin{array}{c}<br>\frac{\sqrt{2}}{2} \<br>\frac{\sqrt{2}}{2}<br>\end{array}\right),$ Thus  $|y’-x’|_1=\sqrt{2}$</p>
-</li>
+<p><span class="math inline">\(\color{blue}{\text{Your Answer:}}\)</span> 1 and 3</p>
+<p><span class="math inline">\(\color{blue}{\text{Your Explanation:}}\)</span></p>
+<ol type="1">
+<li><p><span class="math inline">\(\|(p_{ij}^{(k)}-\mu)-(p_{ij}^{(l)}-\mu)\|_1=\|p_{ij}^{(k)}-p_{ij}^{(l)}\|_1\)</span></p></li>
+<li><p>consider<span class="math inline">\(x=(0,1),y=(1,0)\)</span>. Then <span class="math inline">\(\|y-x\|_1=2\)</span></p>
+<p>now consider the 45 degree rotation matrix <span class="math inline">\(A=\left(\begin{array}{cc} \frac{\sqrt{2}}{2} &amp; -\frac{\sqrt{2}}{2} \\ \frac{\sqrt{2}}{2} &amp; \frac{\sqrt{2}}{2} \end{array}\right)\)</span></p>
+<p><span class="math inline">\(x&#39;=Ax=\left(\begin{array}{c} -\frac{\sqrt{2}}{2} \\ \frac{\sqrt{2}}{2} \end{array}\right), y&#39;=Ay=\left(\begin{array}{c} \frac{\sqrt{2}}{2} \\ \frac{\sqrt{2}}{2} \end{array}\right),\)</span> Thus <span class="math inline">\(\|y&#39;-x&#39;\|_1=\sqrt{2}\)</span></p></li>
 </ol>
-<h3 id="Inline-Q3"><a href="#Inline-Q3" class="headerlink" title="Inline Q3:"></a>Inline Q3:</h3><p>Which of the following statements about $k$-Nearest Neighbor ($k$-NN) are true in a classification setting, and for all $k$? Select all that apply.</p>
-<ol>
-<li><p>The decision boundary of the k-NN classifier is linear.</p>
-</li>
-<li><p>The training error of a 1-NN will always be lower than or equal to that of 5-NN.</p>
-</li>
-<li><p>The test error of a 1-NN will always be lower than that of a 5-NN.</p>
-</li>
-<li><p>The time needed to classify a test example with the k-NN classifier grows with the size of the training set.</p>
-</li>
-<li><p>None of the above.</p>
-</li>
+<h3 id="inline-q3">Inline Q3:</h3>
+<p>Which of the following statements about <span class="math inline">\(k\)</span>-Nearest Neighbor (<span class="math inline">\(k\)</span>-NN) are true in a classification setting, and for all <span class="math inline">\(k\)</span>? Select all that apply.</p>
+<ol type="1">
+<li><p>The decision boundary of the k-NN classifier is linear.</p></li>
+<li><p>The training error of a 1-NN will always be lower than or equal to that of 5-NN.</p></li>
+<li><p>The test error of a 1-NN will always be lower than that of a 5-NN.</p></li>
+<li><p>The time needed to classify a test example with the k-NN classifier grows with the size of the training set.</p></li>
+<li><p>None of the above.</p></li>
 </ol>
-<p>$\color{blue}{\text{Your Answer:}}$ 2 and 4</p>
+<p><span class="math inline">\(\color{blue}{\text{Your Answer:}}\)</span> 2 and 4</p>
 ]]></content>
       <categories>
         <category>CS231n</category>
@@ -105,14 +117,18 @@
     <url>/2021/03/21/Udacity%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>Udacity自动驾驶模拟器因其轻便灵活的特点成为很多初学者的练习项目。网络上示例有很多，但我自己在上手试玩<code>Autonomous mode</code>的时候发现了一个大坑，那就是drive.py与socketio无法成功连接，经过摸索，发现问题出在版本兼容上。</p>
 <a id="more"></a>
-
-<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>运行 <code>python drive.py model.h5</code> 之后出现如下所示情况</p>
-<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210321213726.png" alt="image-20210321213553634"></p>
-<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>socketio很容易不兼容，这里提供一个兼容版本</p>
+<h2 id="问题描述">问题描述</h2>
+<p>运行 <code>python drive.py model.h5</code> 之后出现如下所示情况</p>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210321213726.png" alt="image-20210321213553634" /><figcaption>image-20210321213553634</figcaption>
+</figure>
+<h2 id="解决办法">解决办法</h2>
+<p>socketio很容易不兼容，这里提供一个兼容版本</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install Flask-SocketIO&#x3D;&#x3D;4.3.1 </span><br><span class="line">pip install python-engineio&#x3D;&#x3D;3.13.2 </span><br><span class="line">pip install python-socketio&#x3D;&#x3D;4.6.0</span><br></pre></td></tr></table></figure>
-
 <p>再次试验</p>
-<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210321214210.png" alt="image-20210321214210708"></p>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210321214210.png" alt="image-20210321214210708" /><figcaption>image-20210321214210708</figcaption>
+</figure>
 <p>成功！</p>
 ]]></content>
       <categories>
@@ -127,19 +143,15 @@
     <title>《心灵奇旅》观后有感</title>
     <url>/2021/02/02/%E3%80%8A%E5%BF%83%E7%81%B5%E5%A5%87%E6%97%85%E3%80%8B%E8%A7%82%E5%90%8E%E6%9C%89%E6%84%9F/</url>
     <content><![CDATA[<p>今天看完了《soul》，有一幅场景对话深深地触动到了我。影片的主人公乔伊最终如愿完成了自己梦寐以求的演奏，大获成功，可结束后的他怅然若失。<a id="more"></a></p>
-<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210202212218.jpg" alt="soul-001" style="zoom: 33%;" />
-
-<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210202212333.jpg" alt="soul-002" style="zoom:33%;" />
-
-<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210202212440.jpg" alt="soul-003" style="zoom:33%;" />
-
+<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210202212218.jpg" alt="soul-001" style="zoom: 33%;" /></p>
+<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210202212333.jpg" alt="soul-002" style="zoom:33%;" /></p>
+<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210202212440.jpg" alt="soul-003" style="zoom:33%;" /></p>
 <p>是啊，当我得到曾经一直追逐渴求的东西之后，我并没有想象中那样快乐，没有什么不同，生活依然继续。</p>
 <p>一路走来，我的心中一直燃烧着一团火，让我产生无尽的焦灼与渴望。而当我慢慢靠近它，心中的火似乎越燃越旺，我的焦灼也从未退减。</p>
 <p>世人总定好了优秀的条条框框，我们只得在这条既定的轨道不断内卷，一次小小的课程考试，一场不起眼的比赛都要你追我赶。绩点、科研、竞赛、实习、学生工作面面俱到一个都不能落下，有时候并不是我真的想去做，而是怕被别人比下去。我惭愧地承认，我曾经对自己的认可就是成为人上人，超越别人才能认同自己，一旦落后，便陷入自我怀疑与否定。所以我现在努力克服这样一种心态。</p>
-<p>影片的主题其实在最后一句台词——I’m going to live every minute of it. 可能很多人会觉得是让我们活在当下，享受生活中的每一分每一秒。我的理解是现在的每一分每一秒不会被将来的你所懊悔。电影非但没有倡导享乐主义，反而是督促我们找到生活中的Spark，投入并热爱。</p>
-<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210202212402.jpg" alt="theme" style="zoom:33%;" />
-
-<hr>
+<p>影片的主题其实在最后一句台词——I'm going to live every minute of it. 可能很多人会觉得是让我们活在当下，享受生活中的每一分每一秒。我的理解是现在的每一分每一秒不会被将来的你所懊悔。电影非但没有倡导享乐主义，反而是督促我们找到生活中的Spark，投入并热爱。</p>
+<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210202212402.jpg" alt="theme" style="zoom:33%;" /></p>
+<hr />
 <p>努力奋斗，是为了拥有更多选择，拥有思考的时间，拥有感悟生活的心境。不然，只能像影片中的银行社畜一样被迫谋生，从而迷失自我。</p>
 <p>看到这儿，是不是觉得我想表达的思想有些冲突。其实努力奋斗和享受过程从来都不矛盾，将奋斗的内容视为生活的spark，生活才有意义，这也是活着的意义。</p>
 ]]></content>
@@ -155,49 +167,49 @@
     <url>/2021/01/04/%E5%B0%86Typora%E7%9A%84%E5%9B%BE%E7%89%87%E5%88%A9%E7%94%A8PicGo%E4%B8%8A%E4%BC%A0%E5%88%B0Github%E5%9B%BE%E5%BA%8A/</url>
     <content><![CDATA[<p>想必大家都曾为typora的图片存储而苦恼（尤其是发给别人md文件的时候），所以将typora的图片上传到图床是一个非常棒的方案。本文将介绍如何将typora的图片上传到Github图床。</p>
 <a id="more"></a>
-
-<h2 id="0-Github设置"><a href="#0-Github设置" class="headerlink" title="0. Github设置"></a>0. Github设置</h2><ul>
-<li><p>登录自己的github，建立一个<span style="color:#fb7299;"><strong>公开</strong></span>的仓库，用于存储图片</p>
-</li>
+<h2 id="github设置">0. Github设置</h2>
+<ul>
+<li><p>登录自己的github，建立一个<span style="color:#fb7299;"><strong>公开</strong></span>的仓库，用于存储图片</p></li>
 <li><p>进入personal settings-&gt;developer settings-&gt;personal access tokens-&gt;generate new token</p>
-<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210104214953.png" alt="image-20210104214953729"></p>
-</li>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210104214953.png" alt="image-20210104214953729" /><figcaption>image-20210104214953729</figcaption>
+</figure></li>
 <li><p>生成token信息，<span style="color:#fb7299;">及时复制</span>出现的token</p>
-<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210104215221.png" alt="image-20210104215221084"></p>
-</li>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210104215221.png" alt="image-20210104215221084" /><figcaption>image-20210104215221084</figcaption>
+</figure></li>
 </ul>
-<h2 id="1-PicGo设置"><a href="#1-PicGo设置" class="headerlink" title="1. PicGo设置"></a>1. PicGo设置</h2><ul>
+<h2 id="picgo设置">1. PicGo设置</h2>
+<ul>
 <li><p><a href="https://github.com/Molunerfinn/PicGo/releases" target="_blank" rel="noopener">下载PicGo</a></p>
-<p>Windows 用户请下载最新版本的 <code>exe</code>文件</p>
-</li>
+<p>Windows 用户请下载最新版本的 <code>exe</code>文件</p></li>
 <li><p>图床设置-&gt;GitHub图床</p>
-<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210104220515.png" alt="20210104220057"></p>
-</li>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210104220515.png" alt="20210104220057" /><figcaption>20210104220057</figcaption>
+</figure></li>
 <li><p>PicGo设置</p>
 <ul>
-<li><p>开启时间戳重命名</p>
-</li>
-<li><p>设置Server</p>
-</li>
+<li><p>开启时间戳重命名</p></li>
+<li><p>设置Server</p></li>
 </ul>
-<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210104221735.png" alt="image-20210104221735660" style="zoom: 67%;" /></li>
+<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210104221735.png" alt="image-20210104221735660" style="zoom: 67%;" /></p></li>
 </ul>
-<h2 id="2-Typora-设置"><a href="#2-Typora-设置" class="headerlink" title="2. Typora 设置"></a>2. Typora 设置</h2><ul>
+<h2 id="typora-设置">2. Typora 设置</h2>
+<ul>
 <li><p>偏好设置</p>
-<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210104222052.png" alt="image-20210104222052024"></p>
-</li>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210104222052.png" alt="image-20210104222052024" /><figcaption>image-20210104222052024</figcaption>
+</figure></li>
 <li><p>点击验证图片上传选项，测试是否成功</p>
 <p>如看到验证成功，成功上传图片并获得最新的URL则表示成功</p>
 <p>也可以直接在文档中插入图片来查看是否上传成功</p>
-<p>如果不出意外的话，到这里就可以成功上传图片并显示啦！</p>
-</li>
+<p>如果不出意外的话，到这里就可以成功上传图片并显示啦！</p></li>
 </ul>
 <blockquote>
 <p>排坑记录：能够上传但是不能显示—— hosts 文件解析的问题，参考这个<a href="https://blog.csdn.net/weixin_42128813/article/details/102915578" target="_blank" rel="noopener">解决github图片不显示问题</a></p>
 </blockquote>
 <p>打开路径<code>C:\Windows\System32\drivers\etc\hosts</code>文件，在最后加上</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># GitHub Start </span><br><span class="line">151.101.184.133    raw.githubusercontent.com</span><br><span class="line"># GitHub End</span><br></pre></td></tr></table></figure>
-
 <p><span style="color:#fb7299;">希望可以帮助你们嘿嘿~~</span></p>
 ]]></content>
       <categories>
@@ -211,23 +223,20 @@
   <entry>
     <title>hexo显示本地图片</title>
     <url>/2020/11/08/hexo%E6%98%BE%E7%A4%BA%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/</url>
-    <content><![CDATA[<p>今天真是高产(<del>我又遇到了问题</del>)，哈哈，因为我将上一篇博文deploy之后发现图片加载失败…真的很吐血。去网上一搜索，嗯，好像不少人都遇到了这个问题，解决方法看似一大堆实则无效或过时不匹配，绝大多数资料都是安装<code>hexo-asset-image</code>的插件(ps. 很多资料提供的插件下载地址都不太对)，亲测对于markdown图片路径没有用啊！比出现问题更折磨人的是遇上一堆错误的解决方法…</p>
+    <content><![CDATA[<p>今天真是高产(<del>我又遇到了问题</del>)，哈哈，因为我将上一篇博文deploy之后发现图片加载失败...真的很吐血。去网上一搜索，嗯，好像不少人都遇到了这个问题，解决方法看似一大堆实则无效或过时不匹配，绝大多数资料都是安装<code>hexo-asset-image</code>的插件(ps. 很多资料提供的插件下载地址都不太对)，亲测对于markdown图片路径没有用啊！比出现问题更折磨人的是遇上一堆错误的解决方法...</p>
 <p>我想要寻找在本地和网页上都能显示的办法，终于发现了一款插件<code>hexo-image-link</code>，是将markdown图片路径转换为asset_img语法，使得图片能够同时显示在typora和hexo上。</p>
 <a id="more"></a>
-
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![image file label](markdown-file-name&#x2F;local-image.png) -&gt; &#123;% asset_img label local-image.png %&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="具体步骤"><a href="#具体步骤" class="headerlink" title="具体步骤"></a>具体步骤</h2><ul>
+<h2 id="具体步骤">具体步骤</h2>
+<ul>
 <li>修改<code>_config.yml</code>中的<code>post_asset_folder: true</code></li>
 <li><code>$ npm install hexo-image-link --save</code></li>
-<li>如果 npm下载比较慢的话，尝试 cnpm下载<ul>
+<li>如果 npm下载比较慢的话，尝试 cnpm下载
+<ul>
 <li><code>$ npm install -g cnpm --registry=https://registry.npm.taobao.org</code></li>
 <li><code>$ cnpm install hexo-image-link --save</code></li>
-</ul>
-</li>
-<li>修改md文件中的图片路径<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![label](markdown-file-name&#x2F;image-name.jpg)</span><br></pre></td></tr></table></figure>
-
-</li>
+</ul></li>
+<li>修改md文件中的图片路径 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![label](markdown-file-name&#x2F;image-name.jpg)</span><br></pre></td></tr></table></figure></li>
 </ul>
 <p>大功告成！</p>
 <p>赶紧generate and deploy验证一下，完美！</p>
@@ -244,58 +253,69 @@
   <entry>
     <title>让Google搜索到个人博客</title>
     <url>/2020/11/08/%E8%AE%A9Google%E6%90%9C%E7%B4%A2%E5%88%B0%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<p>我曾天真地以为搜索引擎能够搜索到自己的博客，咳咳… 真是 too young too naive.</p>
+    <content><![CDATA[<p>我曾天真地以为搜索引擎能够搜索到自己的博客，咳咳... 真是 too young too naive.</p>
 <p>毕竟个人博客作为一个不知名小网站，若想被Google搜索到，需要手动将网址链接添加到Google搜索引擎的索引中。本篇文章就记录下如何让Google搜索到个人博客。</p>
 <a id="more"></a>
-
-<h2 id="0-查看个人博客是否被收录"><a href="#0-查看个人博客是否被收录" class="headerlink" title="0.查看个人博客是否被收录"></a>0.查看个人博客是否被收录</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line">site:https://lyh9909.github.io</span><br></pre></td></tr></table></figure>
-
+<h2 id="查看个人博客是否被收录">0.查看个人博客是否被收录</h2>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">site:https://lyh9909.github.io</span><br></pre></td></tr></table></figure>
 <p>if show</p>
-<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210124000551.png" alt="image-20201108173849201"></p>
-<p>​        那么恭喜你！你发现了一片宝藏文章，继续看下去吧。</p>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210124000551.png" alt="image-20201108173849201" /><figcaption>image-20201108173849201</figcaption>
+</figure>
+<p>​ 那么恭喜你！你发现了一片宝藏文章，继续看下去吧。</p>
 <p>else</p>
-<p>​        相逢即是缘…</p>
-<h2 id="1-打开Google-Search-Console"><a href="#1-打开Google-Search-Console" class="headerlink" title="1.打开Google Search Console"></a>1.打开<a href="https://search.google.com/search-console?hl=zh" target="_blank" rel="noopener">Google Search Console</a></h2><p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210124000557.png" alt="image-20201108174629892"></p>
-<p>选择网址前缀，输入个人博客网址，比如<a href="https://lyh9909.github.io/" target="_blank" rel="noopener">https://lyh9909.github.io</a></p>
+<p>​ 相逢即是缘...</p>
+<h2 id="打开google-search-console">1.打开<a href="https://search.google.com/search-console?hl=zh" target="_blank" rel="noopener">Google Search Console</a></h2>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210124000557.png" alt="image-20201108174629892" /><figcaption>image-20201108174629892</figcaption>
+</figure>
+<p>选择网址前缀，输入个人博客网址，比如https://lyh9909.github.io</p>
 <ul>
-<li>下载该html文件并上传至个人博客根目录<a href="https://lyh9909.github.io/" target="_blank" rel="noopener">https://lyh9909.github.io/</a><ul>
+<li>下载该html文件并上传至个人博客根目录https://lyh9909.github.io/
+<ul>
 <li>以我个人博客本地目录为例，下载至：<code>hexo/public</code></li>
-<li>提交至github仓库，可以看到<a href="https://lyh9909.github.io/" target="_blank" rel="noopener">https://lyh9909.github.io/</a> 里出现该html文件</li>
-</ul>
-</li>
-<li>在浏览器中访问<a href="https://lyh9909.github.io/googled5a7a45251cda4f4.html" target="_blank" rel="noopener">https://lyh9909.github.io/googled5a7a45251cda4f4.html</a> 确认上传成功</li>
+<li>提交至github仓库，可以看到https://lyh9909.github.io/ 里出现该html文件</li>
+</ul></li>
+<li>在浏览器中访问https://lyh9909.github.io/googled5a7a45251cda4f4.html 确认上传成功</li>
 <li>点击验证，出现下图</li>
 </ul>
-<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210124000637.png" alt="image-20201108185441910"></p>
-<h2 id="2-添加站点地图"><a href="#2-添加站点地图" class="headerlink" title="2.添加站点地图"></a>2.添加站点地图</h2><p>网站地图描述了一个网站的架构，这有利于访问者以及搜索引擎找到网站的页面。</p>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210124000637.png" alt="image-20201108185441910" /><figcaption>image-20201108185441910</figcaption>
+</figure>
+<h2 id="添加站点地图">2.添加站点地图</h2>
+<p>网站地图描述了一个网站的架构，这有利于访问者以及搜索引擎找到网站的页面。</p>
 <ul>
 <li><p>打开 <a href="https://www.xml-sitemaps.com/" target="_blank" rel="noopener">XML-sitemap</a> , 输入博客地址，点击start</p>
-<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210124000648.png" alt="image-20201108191431697"></p>
-</li>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210124000648.png" alt="image-20201108191431697" /><figcaption>image-20201108191431697</figcaption>
+</figure></li>
 <li><p>等待搜索完成，点击 VIEW SITE DETAILS</p>
-<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210124000658.png" alt="image-20201108191612024"></p>
-</li>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210124000658.png" alt="image-20201108191612024" /><figcaption>image-20201108191612024</figcaption>
+</figure></li>
 <li><p>点击下载 sitemap.xml 文件并上传至个人博客根目录 (方法同前面的google.html文件)</p>
-<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210124000707.png" alt="image-20201108191655509"></p>
-</li>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210124000707.png" alt="image-20201108191655509" /><figcaption>image-20201108191655509</figcaption>
+</figure></li>
 </ul>
-<h2 id="3-提交站点地图"><a href="#3-提交站点地图" class="headerlink" title="3.提交站点地图"></a>3.提交站点地图</h2><ul>
-<li><p>再次打开<a href="https://search.google.com/search-console?hl=zh" target="_blank" rel="noopener">Google Search Console</a></p>
-</li>
-<li><p>点击主菜单中的站点地图</p>
-</li>
+<h2 id="提交站点地图">3.提交站点地图</h2>
+<ul>
+<li><p>再次打开<a href="https://search.google.com/search-console?hl=zh" target="_blank" rel="noopener">Google Search Console</a></p></li>
+<li><p>点击主菜单中的站点地图</p></li>
 <li><p>在框里输入sitemap.xml，点击提交</p>
-<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210124000915.png" alt="image-20201108192158624"></p>
-</li>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210124000915.png" alt="image-20201108192158624" /><figcaption>image-20201108192158624</figcaption>
+</figure></li>
 <li><p>提交成功</p>
-<p><img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210124000727.png" alt="image-20201108192303574"></p>
-</li>
+<figure>
+<img src="https://gitee.com/liuyh9909/note-imgs/raw/master/20210124000727.png" alt="image-20201108192303574" /><figcaption>image-20201108192303574</figcaption>
+</figure></li>
 </ul>
 <p>嘿嘿，恭喜你，完结撒花~~</p>
 <blockquote>
 <p>等等，回来！为何发现个人博客还是没有被收录？！</p>
 <p>哎呦，不要着急嘛！要等google下一次更新索引的时候才会将你添加的内容收录进去滴 ~</p>
-<p>大概等个2-3周吧，先把个人博客的内容优化一下吧，这么少的内容哪里有人看 (我说我自己…)</p>
+<p>大概等个2-3周吧，先把个人博客的内容优化一下吧，这么少的内容哪里有人看 (我说我自己...)</p>
 </blockquote>
 ]]></content>
       <categories>
@@ -308,39 +328,33 @@
   <entry>
     <title>nexT主题更改背景图片和边框圆角</title>
     <url>/2020/02/04/nexT%E4%B8%BB%E9%A2%98%E6%9B%B4%E6%94%B9%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87%E5%92%8C%E8%BE%B9%E6%A1%86%E5%9C%86%E8%A7%92/</url>
-    <content><![CDATA[<p>搭建好自己的博客，总想对其美化一番，一路捯饬下来，也踩了不少坑。于是用博文记录下如何正确配置美化nexT主题，希望能够帮助到有缘看到此博的小白哈哈（好吧我也是个小白）…</p>
+    <content><![CDATA[<p>搭建好自己的博客，总想对其美化一番，一路捯饬下来，也踩了不少坑。于是用博文记录下如何正确配置美化nexT主题，希望能够帮助到有缘看到此博的小白哈哈（好吧我也是个小白）...</p>
 <a id="more"></a>
-
 <p>从nexT-7.3.0开始，采用数据文件将配置与主题分离，便于后续nexT版本更新。</p>
-<h3 id="更改图片背景"><a href="#更改图片背景" class="headerlink" title="更改图片背景"></a>更改图片背景</h3><p>发现目前网上流行的解决方案还是在<code>hexo/themes/next/source/css/_custom/_custom.styl</code>中进行配置。</p>
+<h3 id="更改图片背景">更改图片背景</h3>
+<p>发现目前网上流行的解决方案还是在<code>hexo/themes/next/source/css/_custom/_custom.styl</code>中进行配置。</p>
 <p>新版本需要新建<code>hexo/source/_data/styles.styl</code>，即在<code>hexo</code>目录的<code>source</code>文件夹下新建<code>_data</code>文件夹，文件夹中新建<code>styles.styl</code>。</p>
 <blockquote>
-<h4 id="注意：是新建在hexo目录下source文件夹里，而不是主题文件next目录下的source文件夹。"><a href="#注意：是新建在hexo目录下source文件夹里，而不是主题文件next目录下的source文件夹。" class="headerlink" title="注意：是新建在hexo目录下source文件夹里，而不是主题文件next目录下的source文件夹。"></a>注意：是新建在hexo目录下source文件夹里，而不是主题文件next目录下的source文件夹。</h4></blockquote>
+<h4 id="注意是新建在hexo目录下source文件夹里而不是主题文件next目录下的source文件夹">注意：是新建在hexo目录下source文件夹里，而不是主题文件next目录下的source文件夹。</h4>
+</blockquote>
 <p>打开<code>styles.styl</code>，添加如下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;背景图片设置</span><br><span class="line">body &#123;</span><br><span class="line">    background-image: url(&#x2F;images&#x2F;background.jpg);</span><br><span class="line">    background-repeat: no-repeat;</span><br><span class="line">    background-attachment: fixed;</span><br><span class="line">    background-size: 100% 100%;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <ul>
-<li><p><code>background-image:url</code> 为图片路径，可以直接使用链接，也可以是图片路径（将自定义图片放入<code>hexo\public\images</code>路径下）</p>
-</li>
-<li><p><code>background-repeat</code>：若果背景图片不能全屏，那么是否平铺显示，充满屏幕</p>
-</li>
-<li><p><code>background-attachment</code>：背景是否随着网页上下滚动而滚动，fixed 为固定</p>
-</li>
-<li><p><code>background-size</code>：图片展示大小，这里设置 100%，100% 的意义为：如果背景图片不能全屏，那么是否通过拉伸的方式将背景强制拉伸至全屏显示</p>
-</li>
+<li><p><code>background-image:url</code> 为图片路径，可以直接使用链接，也可以是图片路径（将自定义图片放入<code>hexo\public\images</code>路径下）</p></li>
+<li><p><code>background-repeat</code>：若果背景图片不能全屏，那么是否平铺显示，充满屏幕</p></li>
+<li><p><code>background-attachment</code>：背景是否随着网页上下滚动而滚动，fixed 为固定</p></li>
+<li><p><code>background-size</code>：图片展示大小，这里设置 100%，100% 的意义为：如果背景图片不能全屏，那么是否通过拉伸的方式将背景强制拉伸至全屏显示</p></li>
 </ul>
 <p>接下来打开<code>hexo/themes/next/_config.yml</code>，即next主题配置文件，修改如下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">custom_file_path:</span><br><span class="line">  </span><br><span class="line">  style: source&#x2F;_data&#x2F;styles.styl</span><br></pre></td></tr></table></figure>
-
 <p>记得保存。</p>
-<h3 id="博客页面透明化"><a href="#博客页面透明化" class="headerlink" title="博客页面透明化"></a>博客页面透明化</h3><p>为了更好欣赏背景图片，可将博客页面透明化，在<code>styles.styl</code>里添加如下内容：</p>
+<h3 id="博客页面透明化">博客页面透明化</h3>
+<p>为了更好欣赏背景图片，可将博客页面透明化，在<code>styles.styl</code>里添加如下内容：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;文章内容的透明度设置</span><br><span class="line">.content-wrap &#123;</span><br><span class="line">  opacity: 0.9;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;侧边框的透明度设置</span><br><span class="line">.sidebar &#123;</span><br><span class="line">  background-color: transparent;</span><br><span class="line">  opacity: 0.9;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;菜单栏的透明度设置</span><br><span class="line">.header-inner &#123;</span><br><span class="line">  background: rgba(255,255,255,0.9);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="边框圆角"><a href="#边框圆角" class="headerlink" title="边框圆角"></a>边框圆角</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">custom_file_path:</span><br><span class="line">  </span><br><span class="line">  variable: source&#x2F;_data&#x2F;variables.styl</span><br></pre></td></tr></table></figure>
-
+<h3 id="边框圆角">边框圆角</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">custom_file_path:</span><br><span class="line">  </span><br><span class="line">  variable: source&#x2F;_data&#x2F;variables.styl</span><br></pre></td></tr></table></figure>
 <p>在之前新建的<code>_data</code>目录下新建<code>variables.styl</code>，类似新建<code>styles.styl</code>。打开<code>variables.styl</code>，添加如下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 圆角设置</span><br><span class="line">$border-radius-inner     &#x3D; 20px 20px 20px 20px;</span><br><span class="line">$border-radius           &#x3D; 20px;</span><br></pre></td></tr></table></figure>
-
 ]]></content>
       <categories>
         <category>工具使用</category>
@@ -354,14 +368,17 @@
   <entry>
     <title>第一篇博文</title>
     <url>/2020/02/02/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E6%96%87/</url>
-    <content><![CDATA[<h4 id="“所谓博客，不过是孤芳自赏”"><a href="#“所谓博客，不过是孤芳自赏”" class="headerlink" title="“所谓博客，不过是孤芳自赏”"></a><center>“所谓博客，不过是孤芳自赏”</center></h4><hr>
+    <content><![CDATA[####
+<center>
+“所谓博客，不过是孤芳自赏”
+</center>
+<hr />
 <a id="more"></a>
-
 <p>在特殊的日子20200202这一天搭建好属于自己的博客，写下第一篇博文纪念哈。</p>
 <p>我想，每个人写博客的初衷是希望自己的文章能够帮助他人解决问题，但更多时候更像是对自己所学所想进行记录，在浩瀚的互联网中留下自己的足迹，自赏自悦。</p>
 <p>王阳明有言：“你未看此花时，此花与汝心同归于寂，你来看此花时，则此花颜色一时明白起来。便知此花不在你的心外”。博客亦如此，因你看见，所以存在。</p>
 <p>生活中总有很多时候感慨颇多，想提笔抒发胸臆，但往往以费时费力为逃避借口，便一再搁置。过段时日却再也找不回当初所想所感。</p>
-<p>此篇结束。未来的日子，待续…</p>
+<p>此篇结束。未来的日子，待续...</p>
 ]]></content>
       <categories>
         <category>随笔</category>

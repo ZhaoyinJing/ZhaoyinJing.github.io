@@ -46,12 +46,12 @@
   };
 </script>
 
-  <meta name="description" content="“所谓博客，不过是孤芳自赏”">
+  <meta name="description" content="####  “所谓博客，不过是孤芳自赏”">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第一篇博文">
 <meta property="og:url" content="https://yoursite.com/2020/02/02/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E6%96%87/index.html">
 <meta property="og:site_name" content="Galaxy">
-<meta property="og:description" content="“所谓博客，不过是孤芳自赏”">
+<meta property="og:description" content="####  “所谓博客，不过是孤芳自赏”">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-02-02T07:20:09.558Z">
 <meta property="article:modified_time" content="2021-01-07T09:06:14.369Z">
@@ -289,14 +289,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="“所谓博客，不过是孤芳自赏”"><a href="#“所谓博客，不过是孤芳自赏”" class="headerlink" title="“所谓博客，不过是孤芳自赏”"></a><center>“所谓博客，不过是孤芳自赏”</center></h4><hr>
+        ####
+<center>
+“所谓博客，不过是孤芳自赏”
+</center>
+<hr />
 <a id="more"></a>
-
 <p>在特殊的日子20200202这一天搭建好属于自己的博客，写下第一篇博文纪念哈。</p>
 <p>我想，每个人写博客的初衷是希望自己的文章能够帮助他人解决问题，但更多时候更像是对自己所学所想进行记录，在浩瀚的互联网中留下自己的足迹，自赏自悦。</p>
 <p>王阳明有言：“你未看此花时，此花与汝心同归于寂，你来看此花时，则此花颜色一时明白起来。便知此花不在你的心外”。博客亦如此，因你看见，所以存在。</p>
 <p>生活中总有很多时候感慨颇多，想提笔抒发胸臆，但往往以费时费力为逃避借口，便一再搁置。过段时日却再也找不回当初所想所感。</p>
-<p>此篇结束。未来的日子，待续…</p>
+<p>此篇结束。未来的日子，待续...</p>
 
     </div>
 
@@ -385,7 +388,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#“所谓博客，不过是孤芳自赏”"><span class="nav-number">1.</span> <span class="nav-text">“所谓博客，不过是孤芳自赏”</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -539,6 +541,54 @@
   
 
   
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 
