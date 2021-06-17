@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>hexo显示latex公式</title>
+    <url>/2021/06/12/hexo%E6%98%BE%E7%A4%BAlatex%E5%85%AC%E5%BC%8F/</url>
+    <content><![CDATA[<p>。</p>
+<p>按照官网教程在hexo下实现latex公式渲染。</p>
+<blockquote>
+<p>Hexo v4.2.0|NexT v7.7.1</p>
+</blockquote>
+<a id="more"></a>
+<p>首先强推<a href="https://theme-next.js.org/docs/third-party-services/math-equations.html" target="_blank" rel="noopener">官网教程</a>，此前我曾在各种博客里搜寻解决办法，发现一点作用都没有。这告诫我们，遇到困难第一时间找官方手册解决问题。</p>
+<h2 id="具体步骤">具体步骤</h2>
+<ul>
+<li><p>卸载<code>hexo-math</code>：<code>$ npm un hexo-math</code></p></li>
+<li><p>替换渲染</p>
+<ul>
+<li><p><code>$ npm un hexo-renderer-marked</code></p></li>
+<li><p><code>$ npm i hexo-renderer-pandoc</code></p>
+<blockquote>
+<p><a href="https://github.com/jgm/pandoc" target="_blank" rel="noopener">pandoc</a> is required for hexo-renderer-pandoc, here's <a href="https://github.com/jgm/pandoc/blob/master/INSTALL.md" target="_blank" rel="noopener">how to install pandoc</a>.</p>
+</blockquote></li>
+</ul></li>
+<li><p>在<code>hexo/_config.yml</code>末尾添加一段代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">math:</span><br><span class="line">  engine: &#39;mathjax&#39; # or &#39;katex&#39;</span><br><span class="line">  mathjax:</span><br><span class="line">    # src: custom_mathjax_source</span><br><span class="line">    config:</span><br><span class="line">      # MathJax config</span><br></pre></td></tr></table></figure></li>
+<li><p>修改<code>next/_config.yml</code>中<code>mathjax</code>的设置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Math Formulas Render Support</span><br><span class="line">math:</span><br><span class="line">  # Default (true) will load mathjax &#x2F; katex script on demand.</span><br><span class="line">  # That is it only render those page which has &#96;mathjax: true&#96; in Front-matter.</span><br><span class="line">  # If you set it to false, it will load mathjax &#x2F; katex srcipt EVERY PAGE.</span><br><span class="line">  per_page: false</span><br><span class="line"></span><br><span class="line">  # hexo-renderer-pandoc (or hexo-renderer-kramed) required for full MathJax support.</span><br><span class="line">  mathjax:</span><br><span class="line">    enable: true</span><br><span class="line">    # See: https:&#x2F;&#x2F;mhchem.github.io&#x2F;MathJax-mhchem&#x2F;</span><br><span class="line">    mhchem: false</span><br><span class="line">    </span><br><span class="line">vendors:</span><br><span class="line">  mathjax: &#x2F;&#x2F;cdnjs.cloudflare.com&#x2F;ajax&#x2F;libs&#x2F;mathjax&#x2F;2.7.5&#x2F;MathJax.js?config&#x3D;TeX-MML-AM_CHTML</span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>注意：</p>
+<p>如果<code>per_page:false</code>则md文件前面要加上<code>mathjax:true</code></p>
+</blockquote>
+<p>最后<code>$ hexo clean &amp;&amp; hexo g -d# or hexo clean &amp;&amp; hexo s</code>，检验是否成功。</p>
+]]></content>
+      <categories>
+        <category>工具使用</category>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>博客</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CS231n-任务1：KNN</title>
     <url>/2021/06/08/CS231n-%E4%BB%BB%E5%8A%A11%EF%BC%9AKNN/</url>
     <content><![CDATA[<h2 id="q1-k-nearest-neighbor-classifier">Q1: k-Nearest Neighbor classifier</h2>
