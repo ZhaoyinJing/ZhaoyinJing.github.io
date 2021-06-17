@@ -3,8 +3,7 @@
   <entry>
     <title>hexo显示latex公式</title>
     <url>/2021/06/12/hexo%E6%98%BE%E7%A4%BAlatex%E5%85%AC%E5%BC%8F/</url>
-    <content><![CDATA[<p>。</p>
-<p>按照官网教程在hexo下实现latex公式渲染。</p>
+    <content><![CDATA[<p>按照官网教程在hexo下实现latex公式渲染。</p>
 <blockquote>
 <p>Hexo v4.2.0|NexT v7.7.1</p>
 </blockquote>
